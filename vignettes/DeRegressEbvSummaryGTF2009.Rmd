@@ -1,0 +1,122 @@
+---
+output:
+  pdf_document:
+    includes:
+      in_header: tex/header.tex
+  word_document: default
+bibliography: DeRegressEbvSummaryGTF2009.bibtex  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, results = 'asis')
+
+```
+
+
+![Qualitas Logo](png/QualitasLogo.png)
+
+\fcolorbox{black}{white}{
+	\parbox[t]{1.0\linewidth}{
+		\centering \fontsize{12pt}{20pt}\selectfont % 
+		\vspace*{0.5cm} % 
+
+		\hfill Summary
+
+		\vspace*{0.5cm} 
+	}
+}
+
+\vspace*{0.5cm}
+
+\fcolorbox{black}{white}{
+	\parbox[t]{1.0\linewidth}{
+		\centering \fontsize{25pt}{40pt}\selectfont %
+		\vspace*{0.7cm}
+    De-Regression von geschätzen    \\
+    Zuchtwerten nach dem Paper  \\
+    von GTF2009    \\
+
+		\vspace*{0.7cm} % Space between the end of the title and the bottom of the grey box
+	}
+}
+
+\vspace*{1cm}
+
+\begin{center}
+\includegraphics[width=0.5\textwidth]{png/Pedigree.png}
+\end{center}
+
+\vspace{5ex}
+{\centering \small
+\hfill
+\begin{tabular}{l}
+Peter von Rohr                      \\
+FB EDV, Qualitas AG                 \\
+\verb+http://www.qualitasag.ch+     \\
+\verb+peter.vonrohr@qualitasag.ch+  
+\end{tabular}
+}
+
+\pagebreak
+
+\tableofcontents
+
+
+# Dokumentenstatus
+
+
+
+```{r DocuStatusTable}
+robjDocuStatus <- rqudocuhelper::refObjTable$new()
+pvecTableHeader <- c("Version",
+                     "Datum",
+                     "Wer",
+                     "Änderung")
+robjDocuStatus$setTableHeader(psTableHeader = pvecTableHeader)
+robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.900",
+                                        Date    = "",
+                                        Who     = Sys.info()[["user"]],
+                                        Change  = "Erstellung"))
+#robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.901",
+#                                        Date    = "",
+#                                        Who     = Sys.info()[["user"]],
+#                                        Change  = ""))
+robjDocuStatus$to_pander_pandoc(psStyle = "grid",
+                                psJustify = rep("left", length(pvecTableHeader)),
+                                pnSplitCells = c(10,15,5,40))
+
+```
+
+\pagebreak
+
+# Abkürzungen
+
+```{r AbrTable}
+robjAbrTable <- rqudocuhelper::refObjTable$new()
+pvecTableHeader <- c("Abkürzung",
+                     "Bedeutung")
+robjAbrTable$setTableHeader(psTableHeader = pvecTableHeader)
+robjAbrTable$addRow(plTableRow = list(Abr = "Abk",
+                                      What = "Abkürzung"))
+#robjAbrTable$addRow(plTableRow = list(Abr = "",
+#                                      What = ""))
+robjAbrTable$to_pander_pandoc(psStyle = "grid",
+                              psJustify = rep("left", length(pvecTableHeader)),
+                              pnSplitCells = c(20,60))
+```
+
+\pagebreak
+
+
+# Erklärung
+Dieses Dokument gibt eine Zusammenfassung vom Paper von @GTF2009. 
+
+
+# Einleitung
+Die Effektschätzung in der genomischen Selektion ist abhängig davon, welche 
+Daten als abhängige Beobachtungen verwendet werden. 
+
+
+\pagebreak
+
+# References

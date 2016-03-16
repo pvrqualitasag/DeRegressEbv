@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = FALSE, results = 'asis')
 		\centering \fontsize{12pt}{20pt}\selectfont % 
 		\vspace*{0.5cm} % 
 
-		\hfill Summary
+		\hfill Zusammenfassung
 
 		\vspace*{0.5cm} 
 	}
@@ -81,7 +81,7 @@ robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.900",
 robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.901",
                                         Date    = "16.03.2016",
                                         Who     = Sys.info()[["user"]],
-                                        Change  = "Ideales Modell"))
+                                        Change  = "Ideales Modell, Zuchtwert-Modell"))
 #robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.902",
 #                                        Date    = "",
 #                                        Who     = Sys.info()[["user"]],
@@ -114,7 +114,9 @@ robjAbrTable$to_pander_pandoc(psStyle = "grid",
 
 
 # Erklärung
-Dieses Dokument gibt eine Zusammenfassung vom Paper von @GTF2009. Der Fokus der Zusammenfassung liegt auf dem Abschnitt der Deregression von geschätzten Zuchtwerten (EBV), dies deshalb, weil wir dafür ein direktes Interesse für eine Anwendung haben. Die anderen Abschnitte insbesondere das Material zum Hintergrund des Papers werden hier kurz gehalten. 
+Dieses Dokument gibt eine Zusammenfassung vom Paper von @GTF2009. Der Fokus der Zusammenfassung liegt auf dem Abschnitt der Deregression von geschätzten Zuchtwerten (EBV), dies deshalb, weil wir dafür ein direktes Interesse für eine Anwendung haben. Die anderen Abschnitte insbesondere das Material zum Hintergrund des Papers werden hier kurz gehalten oder ganz ausgelassen. 
+
+In runden Klammern () werden die ursprünglichen englischen Begriffe aufgeführt, wo immer dies sinnvoll erscheint. Die geschweiften Klammern {}  enthalten zusätzliche erklärende Informationen, welche nicht im Paper sind. 
 
 
 # Hintergrund (Background)
@@ -138,9 +140,33 @@ Idealerweise hätten wir für das Training wahre genotypische Werte ($g$) von un
 
 wobei: $\mathbf{g}$ dem Vektor mit wahren Zuchtwerten mit $var(\mathbf{g}) = \mathbf{T}\sigma^2_g$ entspricht und das Skalar $\sigma^2_g$ die genetische Varianz darstellt, wobei $\mathbf{T}$ aufgrund der Theorie zu Kopplung und Kopplungsungleichgewicht aufgestellt werden kann. Die Grösse $\mu$ stellt das Intercept dar. Die Inzidenz-Matrix $\mathbf{M}$ verbindet die Genotypen in $\mathbf{g}$ mit den entsprechenden Substitutionseffekten in $\mathbf{a}$. Die Varianz $var(\mathbf{M}\mathbf{a}) = \mathbf{G}\sigma^2_M$, wobei $\mathbf{G}$ der genomischen Verwandtschaftsmatrix entspricht. Der Vektor $\mathbf{\epsilon}$ steht für die Residuen mit $var(\mathbf{\epsilon}) = \mathbf{E}\sigma^2_{\epsilon}$.   
 
-{Die Diskussion, welche Effekte vom Modell in \ref{eq:IdealModel} zufällig oder fix sind, und ob ein polygener Effekt im Modell mit berücksichtigt werden soll, wird hier nicht im Detail ausgeführt. Die Autoren stellen fest, dass es kaum möglich sein wird, dass die Summe aller Markereffekte die gesamte genetische Varianz erklären kann. Somit wird ein gewisser polygener Anteil im Effekt $\mathbf{\epsilon}$ zu finden sein. Da die Individuen im Training-Set aber verwandt sind miteinander, können die $\mathbf{\epsilon}$ Effekte nicht als unkorreliert modelliert werden. Als Folge davon entspricht die Matrix $\mathbf{E}$ nicht der Einheitsmatrix, sonder wird durch die additive genetische Verwandtschaftsmatrix $\mathbf{A}$ approximiert. Alternativ zur Verwendung von $\mathbf{A}$ können auch explizit korrelierte Residuen gefittet werden. 
+{Die Diskussion, welche Effekte vom Modell in Gleichung (\ref{eq:IdealModel}) zufällig oder fix sind, und ob ein polygener Effekt im Modell mit berücksichtigt werden soll, wird hier nicht im Detail ausgeführt. Die Autoren stellen fest, dass es kaum möglich sein wird, dass die Summe aller Markereffekte die gesamte genetische Varianz erklären kann. Somit wird ein gewisser polygener Anteil im Effekt $\mathbf{\epsilon}$ zu finden sein. Da die Individuen im Training-Set aber verwandt sind miteinander, können die $\mathbf{\epsilon}$ Effekte nicht als unkorreliert modelliert werden. Als Folge davon entspricht die Matrix $\mathbf{E}$ nicht der Einheitsmatrix, sonder wird durch die additive genetische Verwandtschaftsmatrix $\mathbf{A}$ approximiert. Alternativ zur Verwendung von $\mathbf{A}$ können auch explizit korrelierte Residuen gefittet werden. 
 
-Die einzelnen Effekte, welche in den Varianzen auftauchen ($g$, $M$ und $\epsilon$) werden als unkorreliert angenommen. }
+Die zufälligen Effekte ($g$, $M$ und $\epsilon$) des Modells in Gleichung (\ref{eq:IdealModel}) werden als unkorreliert angenommen. Daraus folgt, dass $\sigma^2_g = \sigma^2_M + \sigma^2_{\epsilon}$. Der Anteil der genetischen Varianz, welche nicht von den Markern erklärt wird ist somit
+
+$$c = \frac{\sigma^2_{\epsilon}}{\sigma^2_g} = 1 - \frac{\sigma^2_M}{\sigma^2_g}$$
+
+Die Abschnitte zu den Modellen mit phänotypischen Records, wiederholten Messungen und mit den Nachkommendurchschnitten werden hier vorerst nicht behandelt.}
+
+
+## Geschätzte Zuchtwerte als Trainingsdaten
+Mit BLUP geschätzte Zuchtwerte können als Summe des wahren Zuchtwertes plus ein Schätzfehler (prediction error) betrachtet werden. Als Formel heisst das $\hat{\mathbf{g}} = \mathbf{g} + (\hat{\mathbf{g}} - \mathbf{g})$. Setzt man diese Beziehung in Gleichung (\ref{eq:IdealModel}) ein, dann folgt
+
+\begin{equation}
+\hat{\mathbf{g}} = \mathbf{g} + (\hat{\mathbf{g}} - \mathbf{g}) 
+  = \mathbf{1}\mu + \mathbf{M}\mathbf{a} + (\mathbf{\epsilon} + (\hat{\mathbf{g}} - \mathbf{g}))
+\label{eq:EbvModel}
+\end{equation}
+
+{Gleichung (\ref{eq:EbvModel}) hier in der Zusammenfassung entspricht Gleichung (8) im Paper.}
+
+Die Verwendung von geschätzten Zuchtwerten für die Effektschätzung führt zu mindestens zwei Problemen, welche beide mit den Eigenschaften von BLUP-Schätzern zusammenhängen. Das erste Problem ist, dass die Addition des Schätzfehlers in Gleichung (\ref{eq:EbvModel}) dazu führt, dass die Varianz reduziert und nicht erhöht wird, obwohl die Diagonalelemente von 
+$var(\hat{\mathbf{g}} - \mathbf{g})$ positiv sein muss. 
+
+{Was hier nicht von Bedeutung ist, aber im Paper erwähnt wird, dass bei der Verwendung von phänotypischen Beobachtungen $y_i$ die Varianz steigt, da im Vergleich zum idealen Modell eine nicht genetische Komponente hinzukommt. Als Formel heisst das, dass $var(g_i) > var(\hat{g}_i)$, während $var(g_i) < var(y_i)$, was durch die Schrumpfung (shrinkage) der BLUP-Schätzung verursacht wird.}
+
+Im allgemeinen ist die Varianz einer Differenz wie folgt definiert: $var(\hat{g}_i - g_i) = var(g_i) + var(\hat{g}_i) - 2cov(\hat{g}_i, g_i)$. Aber für BLUP gilt $cov(\hat{g}_i, g_i) = var(\hat{g}_i)$ und somit ist $var(\hat{g}_i - g_i) = var(g_i) - var(\hat{g}_i)$ und somit ist $var(g_i) > var(\hat{g}_i)$. 
+
 
 
 

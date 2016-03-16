@@ -61,6 +61,7 @@ FB EDV, Qualitas AG                 \\
 
 \tableofcontents
 
+\pagebreak
 
 # Dokumentenstatus
 
@@ -77,7 +78,11 @@ robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.900",
                                         Date    = "",
                                         Who     = Sys.info()[["user"]],
                                         Change  = "Erstellung"))
-#robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.901",
+robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.901",
+                                        Date    = "16.03.2016",
+                                        Who     = Sys.info()[["user"]],
+                                        Change  = "Ideales Modell"))
+#robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.902",
 #                                        Date    = "",
 #                                        Who     = Sys.info()[["user"]],
 #                                        Change  = ""))
@@ -109,12 +114,34 @@ robjAbrTable$to_pander_pandoc(psStyle = "grid",
 
 
 # Erklärung
-Dieses Dokument gibt eine Zusammenfassung vom Paper von @GTF2009. 
+Dieses Dokument gibt eine Zusammenfassung vom Paper von @GTF2009. Der Fokus der Zusammenfassung liegt auf dem Abschnitt der Deregression von geschätzten Zuchtwerten (EBV), dies deshalb, weil wir dafür ein direktes Interesse für eine Anwendung haben. Die anderen Abschnitte insbesondere das Material zum Hintergrund des Papers werden hier kurz gehalten. 
 
 
-# Einleitung
+# Hintergrund (Background)
+Genomische Effektschätzung (Genomic prediction) verwendet geschätzte Regressionskoeffizienten von Leistungsdaten auf Genotypen einer dichten Markerkarte aus einer Trainingspopulation für die Vorhersage der genomischen Zuchtwerte in einer Zielpopulation. In der Trainingspopulation befinden sich genotypisierte Tiere mit sehr unterschiedlichen Informationen, wie z. Bsp. wiederholte Messungen, Nachkommeninformationen oder traditionell geschätzte Zuchtwerte. 
+
+In der Literatur gibt es keine einhellige Meinung, wie die verschiedenen Informationsquellen behandelt werden sollten. {Der Überblick im Paper über die verschiedenen Arten, wie die Informationen berücksichtigt werden, wird hier nicht angeführt}
+
+
 Die Effektschätzung in der genomischen Selektion ist abhängig davon, welche 
 Daten als abhängige Beobachtungen verwendet werden. 
+
+
+# Methoden (Methods)
+## Ein ideales Modell
+Idealerweise hätten wir für das Training wahre genotypische Werte ($g$) von unverwandte Individuen ohne Selektion. Dann würde das Modell so aussehen
+
+\begin{equation}
+\mathbf{g} = \mathbf{1}\mu + \mathbf{M}\mathbf{a} + \mathbf{\epsilon}
+\label{eq:IdealModel}
+\end{equation}
+
+wobei: $\mathbf{g}$ dem Vektor mit wahren Zuchtwerten mit $var(\mathbf{g}) = \mathbf{T}\sigma^2_g$ entspricht und das Skalar $\sigma^2_g$ die genetische Varianz darstellt, wobei $\mathbf{T}$ aufgrund der Theorie zu Kopplung und Kopplungsungleichgewicht aufgestellt werden kann. Die Grösse $\mu$ stellt das Intercept dar. Die Inzidenz-Matrix $\mathbf{M}$ verbindet die Genotypen in $\mathbf{g}$ mit den entsprechenden Substitutionseffekten in $\mathbf{a}$. Die Varianz $var(\mathbf{M}\mathbf{a}) = \mathbf{G}\sigma^2_M$, wobei $\mathbf{G}$ der genomischen Verwandtschaftsmatrix entspricht. Der Vektor $\mathbf{\epsilon}$ steht für die Residuen mit $var(\mathbf{\epsilon}) = \mathbf{E}\sigma^2_{\epsilon}$.   
+
+{Die Diskussion, welche Effekte vom Modell in \ref{eq:IdealModel} zufällig oder fix sind, und ob ein polygener Effekt im Modell mit berücksichtigt werden soll, wird hier nicht im Detail ausgeführt. Die Autoren stellen fest, dass es kaum möglich sein wird, dass die Summe aller Markereffekte die gesamte genetische Varianz erklären kann. Somit wird ein gewisser polygener Anteil im Effekt $\mathbf{\epsilon}$ zu finden sein. Da die Individuen im Training-Set aber verwandt sind miteinander, können die $\mathbf{\epsilon}$ Effekte nicht als unkorreliert modelliert werden. Als Folge davon entspricht die Matrix $\mathbf{E}$ nicht der Einheitsmatrix, sonder wird durch die additive genetische Verwandtschaftsmatrix $\mathbf{A}$ approximiert. Alternativ zur Verwendung von $\mathbf{A}$ können auch explizit korrelierte Residuen gefittet werden. 
+
+Die einzelnen Effekte, welche in den Varianzen auftauchen ($g$, $M$ und $\epsilon$) werden als unkorreliert angenommen. }
+
 
 
 \pagebreak

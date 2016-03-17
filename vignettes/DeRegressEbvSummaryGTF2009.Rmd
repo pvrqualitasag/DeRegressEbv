@@ -82,7 +82,11 @@ robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.901",
                                         Date    = "16.03.2016",
                                         Who     = Sys.info()[["user"]],
                                         Change  = "Ideales Modell, Zuchtwert-Modell"))
-#robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.902",
+robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.902",
+                                        Date    = "17.03.2016",
+                                        Who     = Sys.info()[["user"]],
+                                        Change  = "Erklärungen zur Varianzreduktion, Start des Beweises"))
+#robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.903",
 #                                        Date    = "",
 #                                        Who     = Sys.info()[["user"]],
 #                                        Change  = ""))
@@ -175,7 +179,12 @@ Was hier nicht von Bedeutung ist, aber im Paper erwähnt wird, dass bei der Verw
 
 Im allgemeinen ist die Varianz einer Differenz wie folgt definiert: $var(\hat{g}_i - g_i) = var(g_i) + var(\hat{g}_i) - 2cov(\hat{g}_i, g_i)$. Aber für BLUP gilt $cov(\hat{g}_i, g_i) = var(\hat{g}_i)$ {der Beweis dafür ist im Anhang} und somit ist $var(\hat{g}_i - g_i) = var(g_i) - var(\hat{g}_i) > 0$ und somit ist $var(g_i) > var(\hat{g}_i)$. 
 
-Die Reduktion der Varianz der Trainingsdaten rührt von der negativen Korrelation zwischen wahren Zuchtwerten $g_i$ und Schätzfehlern $(\hat{g}_i - g_i)$, d.h. $cov(g_i, \hat{g}_i - g_i) = cov(g_i, \hat{g}_i) - var(g_i) = var(\hat{g}_i) - var(g_i) < 0$. Das heisst Tiere mit hohem wahren Zuchtwert haben tendenziell zu tiefe Schätzwerte, da ihre Schätzfehler negative sind und Tiere mit tiefem wahren Zuchtwert werden eher überschätzt, da deren Schätzfehler eher positiv sind. Dies ist eine Konsequenz der Schrumpfung (shrinkage) von BLUP und von der Tatsache, dass Schätzfehler und geschätzte Zuchtwerte unkorreliert sind, d.h. $cov(\hat{g}_i, \hat{g}_i - g_i) = var(\hat{g}_i) - cov(\hat{g}_i, g_i) = 0$.
+Die Reduktion der Varianz der Trainingsdaten rührt von der negativen Korrelation zwischen wahren Zuchtwerten $g_i$ und Schätzfehlern $(\hat{g}_i - g_i)$, d.h. $cov(g_i, \hat{g}_i - g_i) = cov(g_i, \hat{g}_i) - var(g_i) = var(\hat{g}_i) - var(g_i) < 0$. Das heisst Tiere mit hohem wahren Zuchtwert haben tendenziell zu tiefe Schätzwerte, da ihre Schätzfehler negative sind und Tiere mit tiefem wahren Zuchtwert werden eher überschätzt, da deren Schätzfehler eher positiv sind. Dies ist eine Konsequenz der Schrumpfung (shrinkage) von BLUP und von der Tatsache, dass Schätzfehler und geschätzte Zuchtwerte unkorreliert sind, d.h. $cov(\hat{g}_i, \hat{g}_i - g_i) = var(\hat{g}_i) - cov(\hat{g}_i, g_i) = 0$. 
+
+Damit die Covarianz zwischen wahren Zuchtwerten und Schätzfehlern berücksichtig werden können, müsste ein komplexeres Modell als jenes von Gleichung (\ref{eq:EbvModel}) verwendet werden. Dies wäre auch rein rechnerisch viel aufwändiger. {Wie ein solches Modell aussehen würde und welchen rechnerischen Mehraufwand anfallen würde, wird im Paper nicht weiter erläutert.}
+
+### 2. Problem: Schrumpfung (Shrinkage) der Schätzung zum Mittel
+Die mit BLUP geschätzten Zuchtwerte sind zum Mittel hin geschrumpft (shrinked), wobei das Ausmass der Schrumpfung vom Informationsgehalt (Genauigkeit) abhängig ist. 
 
 
 

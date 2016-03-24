@@ -32,9 +32,9 @@ knitr::opts_chunk$set(echo = FALSE, results = 'asis')
 	\parbox[t]{1.0\linewidth}{
 		\centering \fontsize{25pt}{40pt}\selectfont %
 		\vspace*{0.7cm}
-    De-Regression von geschätzen    \\
-    Zuchtwerten nach dem Paper  \\
-    von GTF2009    \\
+    Deregression von        \\
+    geschätzen Zuchtwerten  \\
+    gemäss GTF2009          \\
 
 		\vspace*{0.7cm} % Space between the end of the title and the bottom of the grey box
 	}
@@ -85,7 +85,7 @@ robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.901",
 robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.902",
                                         Date    = "17.03.2016",
                                         Who     = Sys.info()[["user"]],
-                                        Change  = "Erklärungen zur Varianzreduktion, Start des Beweises"))
+                                        Change  = "Erklärungen zur Varianzreduktion, Start des Beweises, Deregression"))
 #robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.903",
 #                                        Date    = "",
 #                                        Who     = Sys.info()[["user"]],
@@ -146,7 +146,7 @@ Idealerweise hätten wir für das Training wahre genotypische Werte ($g$) von un
 
 wobei: $\mathbf{g}$ dem Vektor mit wahren Zuchtwerten mit $var(\mathbf{g}) = \mathbf{T}\sigma^2_g$ entspricht und das Skalar $\sigma^2_g$ die genetische Varianz darstellt, wobei $\mathbf{T}$ aufgrund der Theorie zu Kopplung und Kopplungsungleichgewicht aufgestellt werden kann. Die Grösse $\mu$ stellt das Intercept dar. Die Inzidenz-Matrix $\mathbf{M}$ verbindet die Genotypen in $\mathbf{g}$ mit den entsprechenden Substitutionseffekten in $\mathbf{a}$. Die Varianz $var(\mathbf{M}\mathbf{a}) = \mathbf{G}\sigma^2_M$, wobei $\mathbf{G}$ der genomischen Verwandtschaftsmatrix entspricht. Der Vektor $\mathbf{\epsilon}$ steht für die Residuen mit $var(\mathbf{\epsilon}) = \mathbf{E}\sigma^2_{\epsilon}$.   
 
-{Die Diskussion, welche Effekte vom Modell in Gleichung (\ref{eq:IdealModel}) zufällig oder fix sind, und ob ein polygener Effekt im Modell berücksichtigt werden soll, wird hier nicht im Detail ausgeführt. Die Autoren stellen fest, dass die Varianz basierend auf den Markereffekten nicht die gesamte genetische Varianz erklären kann. Somit wird ein gewisser polygener Anteil im Effekt $\mathbf{\epsilon}$ zu finden sein. Da die Individuen im Training-Set aber verwandt sind miteinander, können die $\mathbf{\epsilon}$ Effekte nicht als unkorreliert modelliert werden. Als Folge davon entspricht die Matrix $\mathbf{E}$ nicht der Einheitsmatrix, sonder wird durch die additive genetische Verwandtschaftsmatrix $\mathbf{A}$ approximiert. Alternativ zur Verwendung von $\mathbf{A}$ können auch explizit korrelierte Residuen gefittet werden. 
+{Die Diskussion, welche Effekte vom Modell in Gleichung (\ref{eq:IdealModel}) zufällig oder fix sind, und ob ein polygener Effekt im Modell berücksichtigt werden soll, wird hier nicht im Detail ausgeführt. Die Autoren stellen fest, dass die Varianz basierend auf den Markereffekten nicht die gesamte genetische Varianz erklären kann. Somit wird ein gewisser polygener Anteil im Effekt $\mathbf{\epsilon}$ zu finden sein. Da die Individuen im Training-Set aber miteinander verwandt sind, können die $\mathbf{\epsilon}$ Effekte nicht als unkorreliert modelliert werden. Als Folge davon entspricht die Matrix $\mathbf{E}$ nicht der Einheitsmatrix, sondern wird durch die additive genetische Verwandtschaftsmatrix $\mathbf{A}$ approximiert. Alternativ zur Verwendung von $\mathbf{A}$ können auch explizit korrelierte Residuen gefittet werden. 
 
 Die zufälligen Effekte ($g$, $M$ und $\epsilon$) des Modells in Gleichung (\ref{eq:IdealModel}) werden als unkorreliert angenommen. Daraus folgt, dass $\sigma^2_g = \sigma^2_M + \sigma^2_{\epsilon}$. Der Anteil der genetischen Varianz, welche nicht von den Markern erklärt wird ist somit
 
@@ -184,9 +184,30 @@ Die Reduktion der Varianz der Trainingsdaten rührt von der negativen Korrelatio
 Damit die Covarianz zwischen wahren Zuchtwerten und Schätzfehlern berücksichtig werden können, müsste ein komplexeres Modell als jenes von Gleichung (\ref{eq:EbvModel}) verwendet werden. Dies wäre auch rein rechnerisch viel aufwändiger. {Wie ein solches Modell aussehen würde und welchen rechnerischen Mehraufwand anfallen würde, wird im Paper nicht weiter erläutert.}
 
 ### 2. Problem: Schrumpfung (Shrinkage) der Schätzung zum Mittel
-Die mit BLUP geschätzten Zuchtwerte sind zum Mittel hin geschrumpft (shrinked), wobei das Ausmass der Schrumpfung vom Informationsgehalt (Genauigkeit) abhängig ist. 
+Die mit BLUP geschätzten Zuchtwerte sind zum Mittel hin geschrumpft (shrinked), wobei das Ausmass der Schrumpfung vom Informationsgehalt (Genauigkeit) abhängig ist. Das wird offensichtlich begründet dadurch dass die Regression vom wahren Zuchtwert auf den Phänotyp gleich $1$ ist und die Regression vom geschätzten Zuchtwert auf den wahren Zuchtwert ist gleich $r^2_i < 1$, wobei $r^2_i$ der Genauigkeit des geschätzten Zuchtwertes entspricht und als das Quadrat der Korrelation zwischen wahrem und geschätztem Zuchtwert definiert ist. An einem bestimmten Markerlocus ist also die Differenz zwischen geschätzten Zuchtwerten von verschiedenen Genotypen kleiner, als das der Fall wäre, wenn wir wahre Zuchtwerte oder Phänotypen als Beobachtungen verwenden würden. Das Ausmass der Reduktion der Differenzen hängt von den Genauigkeiten $r^2_i$ der geschätzten Zuchtwerte ab. Da uns der Effekt von unterschiedlichen Markergenotypen auf die phänotypische Leistung interessiert und da Tiere in einem Trainingsdatensatz unterschiedlich genau geschätzte Zuchtwerte haben, müssen wir die geschätzten Zuchtwerte de-regressieren, bevor wir diese zur Effektschätzung verwenden können.
 
 
+## Deregression von geschätzten Zuchtwerten
+Die Problem im Zusammenhang mit der Verwendung von geschätzten Zuchtwerten als Trainingsdaten können gelöst werden indem die geschätzten Zuchtwerte mit einer Diagonalmatrix $\mathbf{K}$ skaliert werden. Somit verwenden wir anstelle des Modells in Gleichung (\ref{eq:EbvModel}) das folgende Model für die genomische Effektschätzung
+
+\begin{equation}
+\mathbf{K}\hat{\mathbf{g}} = \mathbf{g} + (\mathbf{K}\hat{\mathbf{g}} - \mathbf{g})
+  = \mathbf{1}\mu + \mathbf{M}\mathbf{a} + (\mathbf{\epsilon} + (\mathbf{K}\hat{\mathbf{g}} - \mathbf{g}))
+\label{eq:InflatedEbvModel}
+\end{equation}
+
+für eine Matrix $\mathbf{K}$, welche so bestimmt wird, dass $cov(g_i, k_i\hat{g}_i - g_i) = 0$ und $cov(k_i\hat{g}_i, g_i) = \rho$, wobei $\rho$ eine Konstante ist. Da die $cov(g_i, k_i\hat{g}_i - g_i) = k_i*var(hat{g}_i) - var(g_i)$ dann $0$ ist, sobald $k_i =  var(g_i)/var(hat{g}_i)$. Für diesen Wert von $k_i$, ist $cov(k_i\hat{g}_i, g_i) = var(g_i)$, was eine Konstante ist für alle Tiere unabhängig von deren Genauigkeit $r^2_i$. Somit ist die Matrix $\mathbf{K}$ bestimmt als $\mathbf{K} = diag(r_i^{^2})$. 
+
+Wichtig hier ist die Feststellung, dass allfällige post-analytische Basiskorrekturen einen Einfluss auf die dregressierten Werte haben. Dies sieht man eindrücklich beim Betrachten des Kontrasts zwischen deregressierten geschätzten Zuchtwerten von zwei Tieren $i$ und $j$. Ohne Entfernung der Basiskorrektur sieht der Kontrast im allgemeinen, wie folgt aus: 
+
+$$\frac{\hat{g}_i - b}{r^2_i} -  \frac{\hat{g}_j - b}{r^2_j} 
+  \ne \frac{\hat{g}_i}{r^2_i} -  \frac{\hat{g}_j}{r^2_j}$$
+
+Somit müssen diese Basisanpassungen wieder rückgängig gemacht werden.
+
+Deregressierte Beobachtungen {wahrscheinlch sind hier mit "Beobachtungen" die deregressierten geschätzten Zuchtwerte $\hat{g}_i / r_i$ gemeint} entsprechen Einzelwerte, welche die gesamte Information zum Individuum und dessen Verwandten enthalten, als wären es Beobachtungen mit $h^2 = r^2$. Dies kann gezeigt werden, da $h^2$ die Regression des Genotyps auf den Phänotypen darstellt. Nehmen wir die deregressierten Zuchtwerte als Phänotypen, dann folgt, dass 
+
+$$h^2 =  $$
 
 \pagebreak
 

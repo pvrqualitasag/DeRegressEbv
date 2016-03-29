@@ -86,7 +86,11 @@ robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.902",
                                         Date    = "17.03.2016",
                                         Who     = Sys.info()[["user"]],
                                         Change  = "Erklärungen zur Varianzreduktion, Start des Beweises, Deregression"))
-#robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.903",
+robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.903",
+                                        Date    = "29.03.2016",
+                                        Who     = Sys.info()[["user"]],
+                                        Change  = "Gewichtung der deregressierten Zuchtwerte"))
+#robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.904",
 #                                        Date    = "",
 #                                        Who     = Sys.info()[["user"]],
 #                                        Change  = ""))
@@ -205,17 +209,26 @@ $$\frac{\hat{g}_i - b}{r^2_i} -  \frac{\hat{g}_j - b}{r^2_j}
 
 Somit müssen diese Basisanpassungen wieder rückgängig gemacht werden.
 
-Deregressierte Beobachtungen {wahrscheinlch sind hier mit "Beobachtungen" die deregressierten geschätzten Zuchtwerte $\hat{g}_i / r_i$ gemeint} entsprechen Einzelwerte, welche die gesamte Information zum Individuum und dessen Verwandten enthalten, als wären es Beobachtungen mit $h^2 = r^2$. Dies kann gezeigt werden, da $h^2$ die Regression des Genotyps auf den Phänotypen darstellt. Nehmen wir die deregressierten Zuchtwerte als Phänotypen, dann folgt, dass 
+Deregressierte Beobachtungen {wahrscheinlch sind hier mit "Beobachtungen" die deregressierten geschätzten Zuchtwerte $\hat{g}_i / r_i$ gemeint} entsprechen Einzelwerten, welche die gesamte Information zum Individuum und dessen Verwandten enthalten, als wären es phänotypische Beobachtungen mit $h^2 = r^2$. Dies kann gezeigt werden, da $h^2$ die Regression des Genotyps auf den Phänotypen darstellt. Nehmen wir die deregressierten Zuchtwerte als Phänotypen, dann folgt, dass 
 
 $$h^2 = \frac{cov(\hat{g}_i/r_i^2, g)}{var(\hat{g}_i/r_i^2)} 
   = \frac{1/r_i^2 var(\hat{g}_i)}{1/r_i^4 var(\hat{g}_i)}
   = r_i^2$$
   
-Werden in der genomischen Effektschätzung für den Trainings-Schritt deregressierte geschätzte Zuchtwerte verwendet, dann ist das äquivalent zu einem Training mit Phanotypen mit variablem $h^2$. Vorausgesetzt, dass $r_i^2 > h^2$ ist die Verwendung von deregressierten geschätzten Zuchtwerten äquivalent zu Merkmalen mit höherer Heritabilität. Dieser Effekt der gesteigerten Heritabilität wird später bei der Diskussion um den Ausschluss von Ahnen-Informationen wieder verringert, oder wird ganz verschwinden. 
+Werden in der genomischen Effektschätzung für den Trainings-Schritt deregressierte geschätzte Zuchtwerte verwendet, dann ist das äquivalent zu einem Training mit Phanotypen mit variablem $h^2$. Vorausgesetzt, dass $r_i^2 > h^2$ ist, ist die Verwendung von deregressierten geschätzten Zuchtwerten äquivalent zu Merkmalen mit höherer Heritabilität. Dieser Effekt der gesteigerten Heritabilität wird später bei der Diskussion um den Ausschluss von Ahnen-Informationen wieder verringert, oder wird ganz verschwinden. {Somit hat diese Diskussion um die Analogie der degressierten Zuchtwerte mit Merkmalen mit einer erhöhten Heritabilität wohl keine grosse Bedeutung und hat eher akademischen Charakter}
 
 
 ## Gewichtung von deregressierten Informationen
-Deregressierte Beobachtungen haben heterogene Varianz, wenn $r^2$ zwischen den Individuen variiert. 
+Deregressierte Beobachtungen haben heterogene Varianz, wenn $r^2$ zwischen den Individuen variiert. Die Varianz der Residuen für eine bestimmte deregressierte Beobachtung entspricht: 
+
+$$var(\epsilon_i + k_i\hat{g}_i - g_i) = var(\epsilon_i) + var(k_i\hat{g}_i - g_i)
+ = var(\epsilon_i) + k_i^2var(\hat{g}_i) + var(g_i) - 2k_ivar(\hat{g}_i)$$
+ 
+wobei $var(\hat{g}_i) = r_i^2var(g_i)$ und $k_ir_i^2 = 1$. Somit vereinfacht sich die Varianz der Residuen zu 
+
+$$var(\epsilon_i + k_i\hat{g}_i - g_i) = var(\epsilon_i) + \frac{1 - r_i^2}{r_i^2} var(g_i)$$
+
+
 
 \pagebreak
 

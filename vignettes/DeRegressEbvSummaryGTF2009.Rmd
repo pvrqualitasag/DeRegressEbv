@@ -89,7 +89,7 @@ robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.902",
 robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.903",
                                         Date    = "29.03.2016",
                                         Who     = Sys.info()[["user"]],
-                                        Change  = "Gewichtung der deregressierten Zuchtwerte"))
+                                        Change  = "Gewichtung der deregressierten Zuchtwerte, Entfernen der Elterninformation"))
 #robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.904",
 #                                        Date    = "",
 #                                        Who     = Sys.info()[["user"]],
@@ -113,6 +113,10 @@ robjAbrTable$addRow(plTableRow = list(Abr = "PE",
                                       What = "prediction error"))
 robjAbrTable$addRow(plTableRow = list(Abr = "PEV",
                                       What = "prediction error variance"))
+robjAbrTable$addRow(plTableRow = list(Abr = "PA",
+                                      What = "parental average"))
+robjAbrTable$addRow(plTableRow = list(Abr = "EBV",
+                                      What = "estimated breeding value"))
 #robjAbrTable$addRow(plTableRow = list(Abr = "",
 #                                      What = ""))
 robjAbrTable$to_pander_pandoc(psStyle = "grid",
@@ -228,6 +232,21 @@ wobei $var(\hat{g}_i) = r_i^2var(g_i)$ und $k_ir_i^2 = 1$. Somit vereinfacht sic
 
 $$var(\epsilon_i + k_i\hat{g}_i - g_i) = var(\epsilon_i) + \frac{1 - r_i^2}{r_i^2} var(g_i)$$
 
+Werden wie zuvor die Off-Diagonalelemente ignoriert, dann entsprechen die Diagonalelemente der Inversen der Covarianzmatrix der Residuen nach der Faktorierung von $\sigma_e^2$ dem folgenden Ausdruck:
+
+$$\frac{\sigma_e^2}{[c+(1-r_i^2)/r_i^2]\sigma_g^2}$$
+
+was sich vereinfachen lässt zu
+
+$$w_i = \frac{1-h^2}{[c + (1-r_i^2)/r_i^2]h^2}$$
+
+## Entfernung der Effekte der Elterndurchschnitte
+Zuchtwerte, welche mit dem BLUP Tiermodell geschätzt werden, schrumpfen (shrink) die Informationen der Individuen und der Nachkommen zum Mittel der Elternzuchtwerte (parental average PA EBV) hin. Somit erscheint es aus zwei Gründen sinnvoll die Effekte der Elterndurchschnitte abzuziehen. 
+
+### 1. Individuen ohne Information
+Individuen mit Zuchtwerten ohne eigene Information oder ohne Nachkommeninformationen können keinen Beitrag zur Schätzung der genomischen Zuchtwerte liefern. Angenommen eine Gruppe von Halbgeschwistern mit individuellen Markergenotypen und deregressierte Ahnenzuchtwerte, dann können diese keine zusätzliche Information liefern, welche nicht schon in den Elterngenotypen und den Elternzuchtwerten enthalten sind. 
+
+### 2. Eltern mit segregierendem Haupteffekt-Allelen
 
 
 \pagebreak

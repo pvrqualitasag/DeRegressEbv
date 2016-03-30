@@ -204,7 +204,7 @@ Die Problem im Zusammenhang mit der Verwendung von geschätzten Zuchtwerten als 
 \label{eq:InflatedEbvModel}
 \end{equation}
 
-für eine Matrix $\mathbf{K}$, welche so bestimmt wird, dass $cov(g_i, k_i\hat{g}_i - g_i) = 0$ und $cov(k_i\hat{g}_i, g_i) = \rho$, wobei $\rho$ eine Konstante ist. Da die $cov(g_i, k_i\hat{g}_i - g_i) = k_i*var(hat{g}_i) - var(g_i)$ dann $0$ ist, sobald $k_i =  var(g_i)/var(hat{g}_i)$. Für diesen Wert von $k_i$, ist $cov(k_i\hat{g}_i, g_i) = var(g_i)$, was eine Konstante ist für alle Tiere unabhängig von deren Genauigkeit $r^2_i$. Somit ist die Matrix $\mathbf{K}$ bestimmt als $\mathbf{K} = diag(r_i^{^2})$. 
+für eine Matrix $\mathbf{K}$, welche so bestimmt wird, dass $cov(g_i, k_i\hat{g}_i - g_i) = 0$ und $cov(k_i\hat{g}_i, g_i) = \rho$, wobei $\rho$ eine Konstante ist. Da die $cov(g_i, k_i\hat{g}_i - g_i) = k_i*var(\hat{g}_i) - var(g_i)$ dann $0$ ist, sobald $k_i =  var(g_i)/var(hat{g}_i)$. Für diesen Wert von $k_i$, ist $cov(k_i\hat{g}_i, g_i) = var(g_i)$, was eine Konstante ist für alle Tiere unabhängig von deren Genauigkeit $r^2_i$. Somit ist die Matrix $\mathbf{K}$ bestimmt als $\mathbf{K} = diag(r_i^{^2})$. 
 
 Wichtig hier ist die Feststellung, dass allfällige post-analytische Basiskorrekturen einen Einfluss auf die dregressierten Werte haben. Dies sieht man eindrücklich beim Betrachten des Kontrasts zwischen deregressierten geschätzten Zuchtwerten von zwei Tieren $i$ und $j$. Ohne Entfernung der Basiskorrektur sieht der Kontrast im allgemeinen, wie folgt aus: 
 
@@ -247,7 +247,34 @@ Zuchtwerte, welche mit dem BLUP Tiermodell geschätzt werden, schrumpfen (shrink
 Individuen mit Zuchtwerten ohne eigene Information oder ohne Nachkommeninformationen können keinen Beitrag zur Schätzung der genomischen Zuchtwerte liefern. Angenommen eine Gruppe von Halbgeschwistern mit individuellen Markergenotypen und deregressierte Ahnenzuchtwerte, dann können diese keine zusätzliche Information liefern, welche nicht schon in den Elterngenotypen und den Elternzuchtwerten enthalten sind. 
 
 ### 2. Eltern mit segregierendem Haupteffekt-Allelen
+Falls bei den Eltern ein Haupteffekt (major effect) {Wahrscheinlich ist hier gemeint, dass ein Locus mit einem sehr grossen Effekt segregiert.} segregiert, dann erhalten etwa die Hälfte der Nachkommen das Allel mit positiver Wirkung und die andere Hälfte der Nachkommen das Allel mit negativer Wirkung. Die deregressierten Zuchtwerte aber werden zum gleichen Elterndurchschnitt hin geschrumpft (shrunken towards the same PA EBV). Elterndurchschnittseffekte können durch direktes speichern deregressierten Informationen des Individuums und der Nachkommen während der iterativen Lösung der Gleichungssysteme, eliminiert werden. {Hier wird auf das Paper von @VW1991 verwiesen.}  Falls keinen Zugang zum Routine-Prozess der Zuchtwertschätzung möglich ist, dann ist es nötig, die Schätzgleichungen zu approximieren und dann daraus die deregressierten Werte ohne die Elterndurchschnitte abzuleiten. Die kann für ein Individuum aufgrund folgender gegebener Grössen gemacht werden: 
 
+- $h^2$
+- geschätzte Zuchtwerte für Individuum $i$ und seine Eltern $s$ und $d$
+- $r^2$ für das Individuum und seine Eltern
+
+Die Elterndurchschnitte (PA) für Zuchtwert $\hat{g}$ und Bestimmtheitsmass $r^2$ lassen sich berechnen als: 
+
+$$\hat{g}_{PA} = \frac{\hat{g}_s + \hat{g}_d}{2}$$
+
+und 
+
+$$r_{PA}^2 = \frac{r_s^2 + r_d^2}{4}$$
+
+Angenommen die Eltern sind nicht verwandt und nicht ingezüchtet, dann entspricht die additiv genetische Covarianzmatrix zwischen dem Elterndurchschnitt und dem Nachkommen
+
+$$\mathbf{G} = \left[
+  \begin{array}{cc}
+  0.5  &  0.5 \\
+  0.5  &  1
+  \end{array}
+\right] \sigma_g^2 
+$$
+
+{Die Bedeutung der Komponenten der angegebenen additiv genetischen Covarianzmatrix wird nicht genau spezifiziert. Wahrscheinlich wird implizit auch der Elterndurchschnitt für die wahren Zuchtwerte $g$ gebildet. Somit ist dann 
+$g_{PA} = (g_s + g_d)/2$ und $var(g_{PA}) = var((g_s + g_d)/2) = (var(g_s) + var(g_d))/4 = 0.5\sigma_g^2$, wobei $var(g_s) = var(g_d) = \sigma_g^2$ und  $cov(g_s,g_d) = 0$, falls $s$ und $d$ nicht verwandt und nicht ingezüchtet sind. Die Off-Diagonalelemente berechnen sich als: $cov(g_{PA}, g_i) = cov((g_s + g_d)/2, g_i) = (cov(g_s,g_i) + cov(g_d.g_i))/2$. Sind $s$ und $d$ weder verwandt noch ingezüchtet, dann folgt, dass $cov(g_s,g_i) = cov(g_d.g_i) = 0.5\sigma_g^2$. Somit sind auch die Off-Diagonalelemente gleich $0.5\sigma_g^2$. Das zweite Diagonalelement entspricht $var(g_i) = \sigma_g^2$, falls $i$ nicht ingezüchtet ist.}
+
+Die Inverse Matrix $\mathbf{G}^{-1}$ 
 
 \pagebreak
 

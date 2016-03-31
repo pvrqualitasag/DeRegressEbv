@@ -152,7 +152,7 @@ Idealerweise hätten wir für das Training wahre genotypische Werte ($g$) von un
 \label{eq:IdealModel}
 \end{equation}
 
-wobei: $\mathbf{g}$ dem Vektor mit wahren Zuchtwerten mit $var(\mathbf{g}) = \mathbf{T}\sigma^2_g$ entspricht und das Skalar $\sigma^2_g$ die genetische Varianz darstellt, wobei $\mathbf{T}$ aufgrund der Theorie zu Kopplung und Kopplungsungleichgewicht aufgestellt werden kann. Die Grösse $\mu$ stellt das Intercept dar. Die Inzidenz-Matrix $\mathbf{M}$ verbindet die Genotypen in $\mathbf{g}$ mit den entsprechenden Substitutionseffekten in $\mathbf{a}$. Die Varianz $var(\mathbf{M}\mathbf{a}) = \mathbf{G}\sigma^2_M$, wobei $\mathbf{G}$ der genomischen Verwandtschaftsmatrix entspricht. Der Vektor $\mathbf{\epsilon}$ steht für die Residuen mit $var(\mathbf{\epsilon}) = \mathbf{E}\sigma^2_{\epsilon}$.   
+wobei: $\mathbf{g}$ dem Vektor mit wahren Zuchtwerten mit $var(\mathbf{g}) = \mathbf{T}\sigma^2_g$ entspricht und das Skalar $\sigma^2_g$ die genetische Varianz darstellt, wobei $\mathbf{T}$ aufgrund der Theorie zu Kopplung und Kopplungsungleichgewicht aufgestellt werden kann. Die Grösse $\mu$ stellt den Achsenabschnitt (intercept) dar. Die Inzidenz-Matrix $\mathbf{M}$ verbindet die wahren Zuchtwerte in $\mathbf{g}$ mit den entsprechenden Substitutionseffekten in $\mathbf{a}$. Die Varianz $var(\mathbf{M}\mathbf{a}) = \mathbf{G}\sigma^2_M$, wobei $\mathbf{G}$ der genomischen Verwandtschaftsmatrix entspricht. Der Vektor $\mathbf{\epsilon}$ steht für die Residuen mit $var(\mathbf{\epsilon}) = \mathbf{E}\sigma^2_{\epsilon}$.   
 
 {Die Diskussion, welche Effekte vom Modell in Gleichung (\ref{eq:IdealModel}) zufällig oder fix sind, und ob ein polygener Effekt im Modell berücksichtigt werden soll, wird hier nicht im Detail ausgeführt. Die Autoren stellen fest, dass die Varianz basierend auf den Markereffekten nicht die gesamte genetische Varianz erklären kann. Somit wird ein gewisser polygener Anteil im Effekt $\mathbf{\epsilon}$ zu finden sein. Da die Individuen im Training-Set aber miteinander verwandt sind, können die $\mathbf{\epsilon}$ Effekte nicht als unkorreliert modelliert werden. Als Folge davon entspricht die Matrix $\mathbf{E}$ nicht der Einheitsmatrix, sondern wird durch die additive genetische Verwandtschaftsmatrix $\mathbf{A}$ approximiert. Alternativ zur Verwendung von $\mathbf{A}$ können auch explizit korrelierte Residuen gefittet werden. 
 
@@ -192,6 +192,8 @@ Die Reduktion der Varianz der Trainingsdaten rührt von der negativen Korrelatio
 Damit die Covarianz zwischen wahren Zuchtwerten und Schätzfehlern berücksichtig werden können, müsste ein komplexeres Modell als jenes von Gleichung (\ref{eq:EbvModel}) verwendet werden. Dies wäre auch rein rechnerisch viel aufwändiger. {Wie ein solches Modell aussehen würde und welchen rechnerischen Mehraufwand anfallen würde, wird im Paper nicht weiter erläutert.}
 
 ### 2. Problem: Schrumpfung (Shrinkage) der Schätzung zum Mittel
+{Dieser Titel ist nicht im Paper, wird aber aus Gründen der Übersichtlichkeit hier eingefügt.}
+
 Die mit BLUP geschätzten Zuchtwerte sind zum Mittel hin geschrumpft (shrinked), wobei das Ausmass der Schrumpfung vom Informationsgehalt (Genauigkeit) abhängig ist. Das wird offensichtlich begründet dadurch dass die Regression vom wahren Zuchtwert auf den Phänotyp gleich $1$ ist und die Regression vom geschätzten Zuchtwert auf den wahren Zuchtwert ist gleich $r^2_i < 1$, wobei $r^2_i$ der Genauigkeit des geschätzten Zuchtwertes entspricht und als das Quadrat der Korrelation zwischen wahrem und geschätztem Zuchtwert definiert ist. An einem bestimmten Markerlocus ist also die Differenz zwischen geschätzten Zuchtwerten von verschiedenen Genotypen kleiner, als das der Fall wäre, wenn wir wahre Zuchtwerte oder Phänotypen als Beobachtungen verwenden würden. Das Ausmass der Reduktion der Differenzen hängt von den Genauigkeiten $r^2_i$ der geschätzten Zuchtwerte ab. Da uns der Effekt von unterschiedlichen Markergenotypen auf die phänotypische Leistung interessiert und da Tiere in einem Trainingsdatensatz unterschiedlich genau geschätzte Zuchtwerte haben, müssen wir die geschätzten Zuchtwerte de-regressieren, bevor wir diese zur Effektschätzung verwenden können.
 
 
@@ -241,19 +243,23 @@ was sich vereinfachen lässt zu
 $$w_i = \frac{1-h^2}{[c + (1-r_i^2)/r_i^2]h^2}$$
 
 ## Entfernung der Effekte der Elterndurchschnitte
-Zuchtwerte, welche mit dem BLUP Tiermodell geschätzt werden, schrumpfen (shrink) die Informationen der Individuen und der Nachkommen zum Mittel der Elternzuchtwerte (parental average PA EBV) hin. Somit erscheint es aus zwei Gründen sinnvoll die Effekte der Elterndurchschnitte abzuziehen. 
+Zuchtwerte, welche mit dem BLUP Tiermodell geschätzt werden, schrumpfen (shrink) die Informationen der Individuen und der Nachkommen zum Mittel der Elternzuchtwerte (parental average PA EBV) hin. {Im Paper wird hier @Mrod2005 als Referenz angegeben.} Somit erscheint es aus zwei Gründen sinnvoll die Effekte der Elterndurchschnitte abzuziehen. 
 
 ### 1. Individuen ohne Information
 Individuen mit Zuchtwerten ohne eigene Information oder ohne Nachkommeninformationen können keinen Beitrag zur Schätzung der genomischen Zuchtwerte liefern. Angenommen eine Gruppe von Halbgeschwistern mit individuellen Markergenotypen und deregressierte Ahnenzuchtwerte, dann können diese keine zusätzliche Information liefern, welche nicht schon in den Elterngenotypen und den Elternzuchtwerten enthalten sind. 
 
 ### 2. Eltern mit segregierendem Haupteffekt-Allelen
-Falls bei den Eltern ein Haupteffekt (major effect) {Wahrscheinlich ist hier gemeint, dass ein Locus mit einem sehr grossen Effekt segregiert.} segregiert, dann erhalten etwa die Hälfte der Nachkommen das Allel mit positiver Wirkung und die andere Hälfte der Nachkommen das Allel mit negativer Wirkung. Die deregressierten Zuchtwerte aber werden zum gleichen Elterndurchschnitt hin geschrumpft (shrunken towards the same PA EBV). Elterndurchschnittseffekte können durch direktes speichern deregressierten Informationen des Individuums und der Nachkommen während der iterativen Lösung der Gleichungssysteme, eliminiert werden. {Hier wird auf das Paper von @VW1991 verwiesen.}  Falls keinen Zugang zum Routine-Prozess der Zuchtwertschätzung möglich ist, dann ist es nötig, die Schätzgleichungen zu approximieren und dann daraus die deregressierten Werte ohne die Elterndurchschnitte abzuleiten. Die kann für ein Individuum aufgrund folgender gegebener Grössen gemacht werden: 
+Falls bei den Eltern ein Haupteffekt (major effect) {Wahrscheinlich ist hier gemeint, dass ein Locus mit einem sehr grossen Effekt segregiert.} segregiert, dann erhalten etwa die Hälfte der Nachkommen das Allel mit positiver Wirkung und die andere Hälfte der Nachkommen das Allel mit negativer Wirkung. Die deregressierten Zuchtwerte aber werden zum gleichen Elterndurchschnitt hin geschrumpft (shrunken towards the same PA EBV). Elterndurchschnittseffekte können durch direktes speichern deregressierten Informationen des Individuums und der Nachkommen während der iterativen Lösung der Gleichungssysteme, eliminiert werden. {Hier wird auf das Paper von @VW1991 verwiesen.}  Falls kein Zugang zum Routine-Prozess der Zuchtwertschätzung möglich ist, dann ist es nötig, die Schätzgleichungen zu approximieren und dann daraus die deregressierten Werte ohne die Elterndurchschnitte abzuleiten. 
+
+{Was ab hier folgt, ist eine ziemlich lange und verästelte Herleitung von verschiedenen Resultaten. Mangels besserer Kenntnis wird hier angenommen, dass die ganzen Ausführungen dazu dienen, die Gleichungen der Zuchtwertschätzung zu approximieren und daraus dann die deregressierten Zuchtwerte ohne Elterndurchschnitte abzuleiten. Diese Ableitung wird offenbar so gemacht, dass ein lineares Gleichungssystem aufgestellt wird, welches die Komponente des Elterndurchschnitts $\hat{g}_{PA}$ im geschätzten Zuchtwert $\hat{g}$ von den Komponente des Individuums $\hat{g}_i$ trennt.}
+
+Diese Approximation der Schätzgleichungen kann für ein Individuum $i$ mit Eltern $s$ und $d$ aufgrund folgender gegebener Grössen gemacht werden: 
 
 - $h^2$
 - geschätzte Zuchtwerte für Individuum $i$ und seine Eltern $s$ und $d$
-- $r^2$ für das Individuum und seine Eltern
+- $r^2$ für $i$, $s$ und $d$. 
 
-Die Elterndurchschnitte (PA) für Zuchtwert $\hat{g}$ und Bestimmtheitsmass $r^2$ lassen sich berechnen als: 
+Die Elterndurchschnitte (PA) für Zuchtwert $\hat{g}$ und das Bestimmtheitsmass $r^2$ lassen sich berechnen als: 
 
 $$\hat{g}_{PA} = \frac{\hat{g}_s + \hat{g}_d}{2}$$
 
@@ -274,7 +280,70 @@ $$
 {Die Bedeutung der Komponenten der angegebenen additiv genetischen Covarianzmatrix wird nicht genau spezifiziert. Wahrscheinlich wird implizit auch der Elterndurchschnitt für die wahren Zuchtwerte $g$ gebildet. Somit ist dann 
 $g_{PA} = (g_s + g_d)/2$ und $var(g_{PA}) = var((g_s + g_d)/2) = (var(g_s) + var(g_d))/4 = 0.5\sigma_g^2$, wobei $var(g_s) = var(g_d) = \sigma_g^2$ und  $cov(g_s,g_d) = 0$, falls $s$ und $d$ nicht verwandt und nicht ingezüchtet sind. Die Off-Diagonalelemente berechnen sich als: $cov(g_{PA}, g_i) = cov((g_s + g_d)/2, g_i) = (cov(g_s,g_i) + cov(g_d.g_i))/2$. Sind $s$ und $d$ weder verwandt noch ingezüchtet, dann folgt, dass $cov(g_s,g_i) = cov(g_d.g_i) = 0.5\sigma_g^2$. Somit sind auch die Off-Diagonalelemente gleich $0.5\sigma_g^2$. Das zweite Diagonalelement entspricht $var(g_i) = \sigma_g^2$, falls $i$ nicht ingezüchtet ist.}
 
-Die Inverse Matrix $\mathbf{G}^{-1}$ 
+Die Inverse Matrix $\mathbf{G}^{-1}$ der Matrix $\mathbf{G}$ berechnet sich aus den vereinfachten Invertierungsregeln für $2\times 2$ Matrizen und ist somit:
+
+$$\mathbf{G}^{-1} = \left[
+  \begin{array}{cc}
+  4  &  -2 \\
+  -2  &  2
+  \end{array}
+\right] \sigma_g^{-2} 
+$$
+
+{Die Regeln zur Invertierung einer $2\times 2$ Matrix $\mathbf{A}$ sehen wie folgt aus:
+
+- Auf der Hauptdiagonalen werden die Elemente vertauscht
+- Die Elemente der Nebendiagonalen werden mit $-1$ multipliziert
+- Die ganze Matrix wird mit dem Kehrwert $1/det(A)$ der Determinanten multipliziert
+
+Die Determinante einer $2\times 2$ Matrix $\mathbf{A}$ berechnet sich aus der Differenz zwischen dem Produkt der Elemente auf der Hauptdiagonalen minus dem Produkt der Elemente der Offdiagonalen, oder anders 
+
+$$det(A) = a_{11}*a_{22} - a_{12}*a_{21}$$
+}
+
+Das Resultat der Matrix $\mathbf{G}^{-1}$ wird verwendet um das Gleichungssystem aufzustellen, welches den geschätzten Zuchtwert in die Komponente des Elterndurchschnitts und die Komponente des Individuums aufteilt. Dieses Gleichungssystem sieht wie folgt aus.
+
+$$\left[
+  \begin{array}{cc}
+  Z_{PA}'Z_{PA} + 4\lambda  &  -2\lambda \\
+  -2\lambda                 &  Z_i'Z_i + 2\lambda
+  \end{array}
+\right] 
+\left[
+  \begin{array}{c}
+  \hat{g}_{PA} \\
+  \hat{g}_i
+  \end{array}
+\right]  
+  =
+\left[  
+  \begin{array}{c}
+  y_{PA}^* \\
+  y_i^*
+  \end{array}
+\right] $$
+
+wobei $y_i^*$ der Information, welche zum Individuum gehört und äquivalent einer rechten Handseite (right-hand-side) eines Gleichungssystems ist. $Z_{PA}'Z_{PA}$ und $Z_i'Z_i$ entsprechen den unbekannten Anteilen der Komponente des Elterndurchschnitts und der Komponente des Individuums (plus Information von Nachkommen). $\lambda = (1-h^2)/h^2$ wird als bekannt angenommen. 
+
+Wir definieren nun
+
+$$\left[
+  \begin{array}{cc}
+  Z_{PA}'Z_{PA} + 4\lambda  &  -2\lambda \\
+  -2\lambda                 &  Z_i'Z_i + 2\lambda
+  \end{array}
+\right]^{-1}
+ = 
+\left[
+  \begin{array}{cc}
+  c^{PA,PA}  &  c^{PA,i} \\
+  c^{i,PA}  &  c^{i,i}
+  \end{array}
+\right]
+= \mathbf{C}
+$$
+
+Basierend auf der Tatsache aus @Hend1975 ist $r_i^2 = \frac{var(\hat{g}_i)}{var(g_i)}$ und $var(\hat{\mathbf{g}} = \mathbf{G} - \mathbf{C}\sigma_e^2$. Daraus folgt, dass 
 
 \pagebreak
 

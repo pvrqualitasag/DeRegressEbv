@@ -343,7 +343,18 @@ $$\left[
 = \mathbf{C}
 $$
 
-Basierend auf der Tatsache aus @Hend1975 ist $r_i^2 = \frac{var(\hat{g}_i)}{var(g_i)}$ und $var(\hat{\mathbf{g}} = \mathbf{G} - \mathbf{C}\sigma_e^2$. Daraus folgt, dass 
+Basierend auf der Tatsache aus @Hend1975 ist $r_i^2 = \frac{var(\hat{g}_i)}{var(g_i)}$ und $var(\hat{\mathbf{g}}) = \mathbf{G} - \mathbf{C}\sigma_e^2$. Daraus folgt, dass 
+$r_{PA}^2 = 0.5 - \lambda c^{PA,PA}$ und $r_i^2 = 1 - \lambda c^{i,i}$.
+
+{Die Herleitung der beiden Bestimmtheitsmasse erscheint hier nicht ganz so offensichtlich, wie das im Paper dargestellt ist, vor allem beim Ausdruck für $r_{PA}^2$ kann der Hinweis mit der Definition von $r_i^2$ irreführend sein. 
+
+Zunächst folgt die Definition von $r_i^2$ aus @Hend1975 dadurch, dass bei BLUP gilt, dass $cov(\hat{g}_i, g_i) = var(\hat{g}_i)$ dies ist im Anhang gezeigt. Somit lässt sich die Definition des Bestimmtheitsmasses vereinfachen zu:
+
+$$r_i^2 = \frac{cov(\hat{g}_i, g_i)^2}{var(\hat{g}_i)var(g_i)}
+        = \frac{var(\hat{g}_i)^2}{var(\hat{g}_i)var(g_i)}
+        = \frac{var(\hat{g}_i)}{var(g_i)}
+$$
+}
 
 \pagebreak
 

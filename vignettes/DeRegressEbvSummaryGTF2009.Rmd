@@ -355,6 +355,7 @@ $$r_i^2 = \frac{cov(\hat{g}_i, g_i)^2}{var(\hat{g}_i)var(g_i)}
         = \frac{var(\hat{g}_i)}{var(g_i)}
 $$
 
+
 __Tier $i$__:
 Für Tier $i$ ist die Varianz des geschätzten Zuchtwertes $var(\hat{g}_i) = \mathbf{G}_{11} - \mathbf{C}_{11}\sigma_e^2 = \sigma_g^2 - c^{ii}\sigma_e^2$. Das Bestimmtheitsmass ist dann 
 

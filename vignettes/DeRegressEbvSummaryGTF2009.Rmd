@@ -354,6 +354,22 @@ $$r_i^2 = \frac{cov(\hat{g}_i, g_i)^2}{var(\hat{g}_i)var(g_i)}
         = \frac{var(\hat{g}_i)^2}{var(\hat{g}_i)var(g_i)}
         = \frac{var(\hat{g}_i)}{var(g_i)}
 $$
+
+Zusammen mit der Definition von $var(\hat{\mathbf{g}}) = \mathbf{G} - \mathbf{C}\sigma_e^2$, kann der Ausdruck für das Bestimmtheitsmass des Individuums $i$ berechnet werden als
+
+$$r_i^2 = \frac{var(\hat{g}_i)}{var(g_i)} = \frac{\sigma_g^2 - c^{i,i}\sigma_e^2}{\sigma_g^2} 
+  = 1 - c^{i,i}\sigma_e^2 / \sigma_g^2
+  = 1 - \lambda c^{i,i}
+$$
+
+Dabei haben wir verwendet, dass 
+
+$$\lambda = \frac{1 - h^2}{h^2} = \frac{1 - \sigma_g^2 / \sigma_p^2}{\sigma_g^2 / \sigma_p^2}
+  = \frac{\sigma_p^2  - \sigma_g^2}{\sigma_g^2}
+  = \frac{\sigma_e^2}{\sigma_g^2}
+$$
+
+Den Ausdruck für $var(\hat{g}_i)$ kann aus der Matrix $\mathbf{G} - \mathbf{C}\sigma_e^2$ bestimmt werden und entspricht dem Diagonalelement, welches zum Individuum $i$ gehört. In unserem Beispiel ist das das Element $(2,2)$. 
 }
 
 \pagebreak

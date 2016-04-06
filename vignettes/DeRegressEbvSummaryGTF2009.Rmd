@@ -354,6 +354,28 @@ $$r_i^2 = \frac{cov(\hat{g}_i, g_i)^2}{var(\hat{g}_i)var(g_i)}
         = \frac{var(\hat{g}_i)^2}{var(\hat{g}_i)var(g_i)}
         = \frac{var(\hat{g}_i)}{var(g_i)}
 $$
+
+__Tier $i$__:
+Für Tier $i$ ist die Varianz des geschätzten Zuchtwertes $var(\hat{g}_i) = \mathbf{G}_{11} - \mathbf{C}_{11}\sigma_e^2 = \sigma_g^2 - c^{ii}\sigma_e^2$. Das Bestimmtheitsmass ist dann 
+
+$$r_i^2 =  \frac{var(\hat{g}_i)}{var(g_i)} = \frac{\sigma_g^2 - c^{ii}\sigma_e^2}{\sigma_g^2}
+= 1 - \lambda c^{ii}
+$$
+
+wobei verwendet wurde, dass 
+
+$$ \lambda = \frac{1-h^2}{h^2}
+           = \frac{1 - \sigma_g^2/\sigma_p^2}{\sigma_g^2/\sigma_p^2}
+           = \frac{\sigma_p^2 - \sigma_g^2}{\sigma_g^2}
+           = \frac{\sigma_e^2}{\sigma_g^2}
+$$
+
+
+__Elterndurchschnitt $PA$__:
+Beim Elterndurchschnitt kann das Bestimmtheitsmass nicht direkt notiert werden, sondern es müssen dabei folgende Beziezungen berücksichtigt werden:
+
+
+
 }
 
 \pagebreak

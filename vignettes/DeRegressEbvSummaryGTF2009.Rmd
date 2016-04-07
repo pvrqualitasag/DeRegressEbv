@@ -66,6 +66,21 @@ FB EDV, Qualitas AG                 \\
 # Dokumentenstatus
 
 
+```{r R6DocumentStatusTable, echo=FALSE, eval=FALSE}
+sStatusFile <- "DeRegressEbvSummaryGTF2009.docstat"
+r6DocStat <- rcoursetools::R6DocuStatus$new()
+r6DocStat$setStatusFile(psStatusFile = sStatusFile)
+r6DocStat$addRow(plTableRow = list(Version = "0.0.0.900",
+                                        Date    = "",
+                                        Who     = Sys.info()[["user"]],
+                                        Change  = "Erstellung"))
+r6DocStat$addRow(plTableRow = list(Version = "0.0.0.901",
+                                        Date    = "16.03.2016",
+                                        Who     = Sys.info()[["user"]],
+                                        Change  = "Ideales Modell, Zuchtwert-Modell"))
+r6DocStat$writeStatusToFile()
+
+```
 
 ```{r DocuStatusTable}
 robjDocuStatus <- rqudocuhelper::refObjTable$new()

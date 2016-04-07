@@ -344,7 +344,8 @@ $$\left[
 $$
 
 Basierend auf der Tatsache aus @Hend1975 ist $r_i^2 = \frac{var(\hat{g}_i)}{var(g_i)}$ und $var(\hat{\mathbf{g}}) = \mathbf{G} - \mathbf{C}\sigma_e^2$. Daraus folgt, dass 
-$r_{PA}^2 = 0.5 - \lambda c^{PA,PA}$ und $r_i^2 = 1 - \lambda c^{i,i}$.
+$r_{PA}^2 = 0.5 - \lambda c^{PA,PA}$ und $r_i^2 = 1 - \lambda c^{i,i}$. Umgeformt und nach den $c$-Komponenten aufgelöst, erhalten wir 
+$c^{PA,PA} = (0.5 - r_{PA}^2)/\lambda$ und $c^{i,i} = (1 - r_i^2)/\lambda$. 
 
 {Die Herleitung der beiden Bestimmtheitsmasse erscheint hier nicht ganz so offensichtlich, wie das im Paper dargestellt ist, vor allem beim Ausdruck für $r_{PA}^2$ kann der Hinweis mit der Definition von $r_i^2$ irreführend sein. 
 
@@ -357,7 +358,7 @@ $$
 
 
 __Tier $i$__:
-Für Tier $i$ ist die Varianz des geschätzten Zuchtwertes $var(\hat{g}_i) = \mathbf{G}_{11} - \mathbf{C}_{11}\sigma_e^2 = \sigma_g^2 - c^{ii}\sigma_e^2$. Das Bestimmtheitsmass ist dann 
+Für Tier $i$ ist die Varianz des geschätzten Zuchtwertes $var(\hat{g}_i) = \mathbf{G}_{22} - \mathbf{C}_{22}\sigma_e^2 = \sigma_g^2 - c^{ii}\sigma_e^2$. Das Bestimmtheitsmass ist dann 
 
 $$r_i^2 =  \frac{var(\hat{g}_i)}{var(g_i)} = \frac{\sigma_g^2 - c^{ii}\sigma_e^2}{\sigma_g^2}
 = 1 - \lambda c^{ii}
@@ -375,9 +376,40 @@ $$
 __Elterndurchschnitt $PA$__:
 Beim Elterndurchschnitt kann das Bestimmtheitsmass nicht direkt notiert werden, sondern es müssen dabei folgende Beziezungen berücksichtigt werden:
 
+$$ r_{PA}^2 = \frac{r_s^2 + r_d^2}{4}
+            = 1/4\left(\frac{var(\hat{g}_s)}{var(g_s)} + \frac{var(\hat{g}_d)}{var(g_d)}\right)
+            = \frac{var(\hat{g}_{PA})}{\sigma_g^2}
+$$
 
+An dieser Stelle verwenden wir, dass $var(\hat{g}_{PA}) = \mathbf{G}_{11} - \mathbf{C}_{11}\sigma_e^2 = 0.5\sigma_g^2 - c^{PA,PA}\sigma_e^2$
+
+Das eingesetzt in die Formel für das Bestimmtheitsmass $r_{PA}^2$ ergibt
+
+$$ r_{PA}^2 = \frac{0.5\sigma_g^2 - c^{PA,PA}\sigma_e^2}{\sigma_g^2}
+  = 0.5 - \lambda c^{PA,PA}
+$$
+
+Lösen wir diese Gleichungen nach den Elementen $c^{PA,PA}$ und $c^{i,i}$ der Matrix $\mathbf{C}$ auf so erhalten wir 
+
+$c^{PA,PA} = (0.5 - r_{PA}^2)/\lambda$ und $c^{i,i} = (1 - r_i^2)/\lambda$ 
 
 }
+
+Basierend auf der Formel zur Invertierung einer $2\times2$-matrix können die Komponenten $c^{PA,PA}$ und $c^{i,i}$ auch geschrieben werden als 
+
+$$c^{PA,PA} = (Z_i'Z_i + 2\lambda)/det(\mathbf{C}) = (0.5 - r_{PA}^2)/\lambda$$
+$$c^{i,i} =  (Z_{PA}'Z_{PA} + 4\lambda)/det(\mathbf{C}) = (1 - r_i^2)/\lambda$$  
+
+wobei $det(\mathbf{C}) = (Z_{PA}'Z_{PA} + 4\lambda)(Z_i'Z_i + 2\lambda) - 4\lambda^2$
+
+In einem zweiten Schritt werden die Gleichungen nach $Z_i'Z_i$ und $Z_{PA}'Z_{PA}$ aufgelöst. Eine direkte Lösung erhält man durch Division der beiden Gleichungen durcheinander. Setzen wir $\delta = (0.5 - r_{PA}^2)/(1 - r_i^2)$ und vereinfachen die Gleichungen, so erhalten wir 
+
+$$ Z_i'Z_i = \delta Z_{PA}'Z_{PA} + 2\lambda(2\delta - 1)
+$$
+
+Setzen wir diese Beziehung in der zweiten der oberen Gleichungen ein und definieren $\alpha = 1/(0.5 - r_{PA}^2)$ erhalten wir folgende quadratische Gleichung für $Z_{PA}'Z_{PA}$:
+
+
 
 \pagebreak
 

@@ -274,6 +274,10 @@ Diese Approximation der Schätzgleichungen kann für ein Individuum $i$ mit Elte
 - geschätzte Zuchtwerte für Individuum $i$ und seine Eltern $s$ und $d$
 - $r^2$ für $i$, $s$ und $d$. 
 
+{Die Herleitung der degressierten Zuchtwerte, welche um den Elterndurchschnitt korrigiert sind, wird in drei Schritten gemacht. Im Paper ist diese Aufteilung der drei Schritte nicht so explizit mit Untertiteln gemacht, wie hier, aber die um die Untertitel erweiterte Gliederung sollte zu einem besseren Verständnis beitragen.}
+
+#### Schritt 1: Aufstellen der Mischmodellgleichungen
+
 Die Elterndurchschnitte (PA) für Zuchtwert $\hat{g}$ und das Bestimmtheitsmass $r^2$ lassen sich berechnen als: 
 
 $$\hat{g}_{PA} = \frac{\hat{g}_s + \hat{g}_d}{2}$$
@@ -318,7 +322,8 @@ $$det(A) = a_{11}*a_{22} - a_{12}*a_{21}$$
 
 Das Resultat der Matrix $\mathbf{G}^{-1}$ wird verwendet um das Gleichungssystem aufzustellen, welches den geschätzten Zuchtwert in die Komponente des Elterndurchschnitts und die Komponente des Individuums aufteilt. Dieses Gleichungssystem sieht wie folgt aus.
 
-$$\left[
+\begin{equation}
+\left[
   \begin{array}{cc}
   Z_{PA}'Z_{PA} + 4\lambda  &  -2\lambda \\
   -2\lambda                 &  Z_i'Z_i + 2\lambda
@@ -336,13 +341,16 @@ $$\left[
   y_{PA}^* \\
   y_i^*
   \end{array}
-\right] $$
+\right] 
+\label{eq:SpecialMME}
+\end{equation}
 
 wobei $y_i^*$ der Information, welche zum Individuum gehört und äquivalent einer rechten Handseite (right-hand-side) eines Gleichungssystems ist. $Z_{PA}'Z_{PA}$ und $Z_i'Z_i$ entsprechen den unbekannten Anteilen der Komponente des Elterndurchschnitts und der Komponente des Individuums (plus Information von Nachkommen). $\lambda = (1-h^2)/h^2$ wird als bekannt angenommen. 
 
 Wir definieren nun
 
-$$\left[
+\begin{equation}
+\left[
   \begin{array}{cc}
   Z_{PA}'Z_{PA} + 4\lambda  &  -2\lambda \\
   -2\lambda                 &  Z_i'Z_i + 2\lambda
@@ -356,7 +364,8 @@ $$\left[
   \end{array}
 \right]
 = \mathbf{C}
-$$
+\label{eq:InvCoeff}
+\end{equation}
 
 Basierend auf der Tatsache aus @Hend1975 ist $r_i^2 = \frac{var(\hat{g}_i)}{var(g_i)}$ und $var(\hat{\mathbf{g}}) = \mathbf{G} - \mathbf{C}\sigma_e^2$. Daraus folgt, dass 
 $r_{PA}^2 = 0.5 - \lambda c^{PA,PA}$ und $r_i^2 = 1 - \lambda c^{i,i}$. Umgeformt und nach den $c$-Komponenten aufgelöst, erhalten wir 
@@ -412,17 +421,59 @@ $c^{PA,PA} = (0.5 - r_{PA}^2)/\lambda$ und $c^{i,i} = (1 - r_i^2)/\lambda$
 
 Basierend auf der Formel zur Invertierung einer $2\times2$-matrix können die Komponenten $c^{PA,PA}$ und $c^{i,i}$ auch geschrieben werden als 
 
-$$c^{PA,PA} = (Z_i'Z_i + 2\lambda)/det(\mathbf{C}) = (0.5 - r_{PA}^2)/\lambda$$
-$$c^{i,i} =  (Z_{PA}'Z_{PA} + 4\lambda)/det(\mathbf{C}) = (1 - r_i^2)/\lambda$$  
+\begin{equation}
+c^{PA,PA} = (Z_i'Z_i + 2\lambda)/det(\mathbf{C}) = (0.5 - r_{PA}^2)/\lambda
+\label{eq:CPaPa}
+\end{equation}
+
+\begin{equation}
+c^{i,i} =  (Z_{PA}'Z_{PA} + 4\lambda)/det(\mathbf{C}) = (1 - r_i^2)/\lambda
+\label{eq:Cii}
+\end{equation}
 
 wobei $det(\mathbf{C}) = (Z_{PA}'Z_{PA} + 4\lambda)(Z_i'Z_i + 2\lambda) - 4\lambda^2$
 
-In einem zweiten Schritt werden die Gleichungen nach $Z_i'Z_i$ und $Z_{PA}'Z_{PA}$ aufgelöst. Eine direkte Lösung erhält man durch Division der beiden Gleichungen durcheinander. Setzen wir $\delta = (0.5 - r_{PA}^2)/(1 - r_i^2)$ und vereinfachen die Gleichungen, so erhalten wir 
+{Gleichungen (\ref{eq:CPaPa}) und (\ref{eq:Cii}) entsprechen den Gleichungen (12) und (13) im Paper.}
 
-$$ Z_i'Z_i = \delta Z_{PA}'Z_{PA} + 2\lambda(2\delta - 1)
-$$
+#### Schritt 2: Lösungen für $Z_i'Z_i$ und $Z_{PA}'Z_{PA}$
+In einem zweiten Schritt werden die Gleichungen (\ref{eq:CPaPa}) und (\ref{eq:Cii}) nach $Z_i'Z_i$ und $Z_{PA}'Z_{PA}$ aufgelöst. Eine direkte Lösung erhält man durch Division von Gleichung (\ref{eq:CPaPa}) durch Gleichung (\ref{eq:Cii}). Setzen wir $\delta = (0.5 - r_{PA}^2)/(1 - r_i^2)$ und vereinfachen den Gleichungsquotienten, so erhalten wir 
 
-Setzen wir diese Beziehung in der zweiten der oberen Gleichungen ein und definieren $\alpha = 1/(0.5 - r_{PA}^2)$ erhalten wir folgende quadratische Gleichung für $Z_{PA}'Z_{PA}$:
+\begin{equation}
+Z_i'Z_i = \delta Z_{PA}'Z_{PA} + 2\lambda(2\delta - 1)
+\label{eq:ZiZi}
+\end{equation}
+
+
+Setzen wir (\ref{eq:ZiZi}) in (\ref{eq:Cii}) ein und definieren $\alpha = 1/(0.5 - r_{PA}^2)$ erhalten wir folgende quadratische Gleichung für $Z_{PA}'Z_{PA}$:
+
+\begin{equation}
+0.5(Z_{PA}'Z_{PA})^2 + \lambda(4-0.5\alpha)(Z_{PA}'Z_{PA}) + 2\lambda^2(4-\alpha-1/\delta) = 0
+\label{eq:QuadGlZPaZpa}
+\end{equation}
+
+{Im Paper wird ohne genauere Begründung einfach die positive Lösung weiter verwendet.}
+
+Die quadratische Gleichung (\ref{eq:QuadGlZPaZpa}) hat folgende positive Lösung
+
+\begin{equation}
+Z_{PA}'Z_{PA} = \lambda(4-0.5\alpha) + 0.5\lambda\sqrt{(\alpha^2 + 16/\delta)}
+\label{eq:SolZPaZpa}
+\end{equation}
+
+Durch Einsetzen der Beziehung für $Z_{PA}'Z_{PA}$ aus Gleichung (\ref{eq:SolZPaZpa}) in Gleichung (\ref{eq:ZiZi}) erhalten wir die Lösung für $Z_i'Z_i$. Die beiden Lösungen für $Z_{PA}'Z_{PA}$ und $Z_i'Z_i$ ermöglicht uns die Koeffizientenmatrix aus Gleichung (\ref{eq:SpecialMME}) aufzustellen.
+
+#### Schritt 3: Deregressierter Zuchtwert
+Die rechte Handseite der Mischmodellgleichungen in (\ref{eq:SpecialMME}) resultiert aus der Multiplikation der Koeffizientenmatrix mit dem bekannten Vektor der Zuchtwerte des Elterndurchschnitts und des Individuums. Die Komponente der rechten Handseite, welche befreit ist vom Elterndurchschnitt entspricht $y_i^*$. Die Gleichung für den geschätzten Zuchtwert ($\hat{g}_{i-PA}$) des Individuums $i$, welcher befreit ist vom Elterndurchschnitt lautet:
+
+$$\left[Z_i'Z_i + \lambda\right]\left[\hat{g}_{i-PA}\right] = \left[y_i^*\right]$$
+
+Das zugehörige Bestimmtheitsmass lautet: 
+
+$$r_i^{2*} = 1-\lambda / (Z_i'Z_i + \lambda)$$
+
+Der deregressierte Zuchtwert frei vom Elterndurchschnitt lautet dann 
+
+$$\frac{\hat{g}_{i-PA}}{r_i^{2*}} =  \frac{y_i^*}{Z_i'Z_i}$$
 
 
 

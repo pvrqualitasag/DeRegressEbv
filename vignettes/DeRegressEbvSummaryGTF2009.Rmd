@@ -538,8 +538,44 @@ var(y - X\hat{b}) &=& var(y) + var(X\hat{b}) - cov(y,(X\hat{b})^T) - cov(X\hat{b
 Aus (\ref{eq:VarYMinusXb}) berechnen wir $var(\hat{b})$ und $cov(y,\hat{b}^T)$ wobei gilt, dass $cov(y,\hat{b}^T) = (cov(\hat{b}, y^T))^T$
 
 \begin{eqnarray}
-var(\hat{b}) = 
+var(\hat{b}) &=& var((X^TV^{-1}X)^{-1}X^TV^{-1}y) \\
+ &=& (X^TV^{-1}X)^{-1}X^TV^{-1}*var(y)*V^{-1}X(X^TV^{-1}X)^{-1} \nonumber\\
+ &=& (X^TV^{-1}X)^{-1}X^TV^{-1}*V*V^{-1}X(X^TV^{-1}X)^{-1} \nonumber\\
+ &=& (X^TV^{-1}X)^{-1}X^TV^{-1}X(X^TV^{-1}X)^{-1} \nonumber\\
+ &=& (X^TV^{-1}X)^{-1} \nonumber
 \label{eq:VarHatb}
+\end{eqnarray}
+
+Die Kovarianz zwischen der Beobachtung $y$ und dem Schätzer $\hat{b}$ lautet
+
+\begin{eqnarray}
+cov(\hat{b}, y^T) &=& cov((X^TV^{-1}X)^{-1}X^TV^{-1}y, y^T) \\
+                  &=& (X^TV^{-1}X)^{-1}X^TV^{-1}* cov(y, y^T) \nonumber\\
+                  &=& (X^TV^{-1}X)^{-1}X^TV^{-1}* V \nonumber\\
+                  &=& (X^TV^{-1}X)^{-1}X^T \nonumber
+\label{eq:CovYHatb}
+\end{eqnarray}
+
+
+Das Resultate aus (\ref{eq:CovYHatb}) und (\ref{eq:VarHatb}) werden in (\ref{eq:VarYMinusXb}) eingesetzt. 
+
+\begin{eqnarray}
+var(y - X\hat{b}) &=& var(y) + var(X\hat{b}) - cov(y,(X\hat{b})^T) - cov(X\hat{b}, y^T) \\
+                  &=& V + X*var(\hat{b})*X^T - cov(y,\hat{b}^T)*X^T - X*cov(\hat{b}, y^T) \nonumber \\
+                  &=& V + X*(X^TV^{-1}X)^{-1}*X^T - X(X^TV^{-1}X)^{-1}*X^T - X*(X^TV^{-1}X)^{-1}X^T \nonumber \\
+                  &=& V - X*(X^TV^{-1}X)^{-1}*X^T \nonumber
+\label{eq:VarYMXb}
+\end{eqnarray}
+
+Somit vereinfacht sich $var(\hat{g})$ zu: 
+
+\begin{eqnarray}
+var(\hat{g}) &=& var(GZ^TV^{-1}(y - X\hat{b})) \\
+             &=& GZ^TV^{-1} * var(y - X\hat{b}) * V^{-1}ZG \nonumber\\
+             &=&  GZ^TV^{-1} * (V - X*(X^TV^{-1}X)^{-1}*X^T) * V^{-1}ZG \nonumber\\
+             &=&  GZ^TV^{-1} * V * V^{-1}ZG - GZ^TV^{-1} * X*(X^TV^{-1}X)^{-1}*X^T* V^{-1}ZG \nonumber\\
+             &=&  GZ^TV^{-1} (I - X*(X^TV^{-1}X)^{-1}X^TV^{-1}) ZG \nonumber
+\label{eq:VarHatGResult}
 \end{eqnarray}
 
 

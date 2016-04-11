@@ -481,7 +481,12 @@ $$\frac{\hat{g}_{i-PA}}{r_i^{2*}} =  \frac{y_i^*}{Z_i'Z_i}$$
 
 # Anhang
 
-Im Paper wird verwendet, dass $cov(\hat{g}_i, g_i) = var(\hat{g}_i)$. Hier wird diese Beziehung bewiesen. Der Beweis verwendet einfach die Definitionen der verwendeten Grössen und vereinfacht die resultierenden Ausdrücke bis zu deren Gleichheit. Das folgende gemischte linear Modell wird angenommen:
+Im Paper wird verwendet, dass $cov(\hat{g}_i, g_i) = var(\hat{g}_i)$. Hier wird diese Beziehung bewiesen. Der Beweis verwendet einfach die Definitionen der verwendeten Grössen und vereinfacht die resultierenden Ausdrücke bis zu deren Gleichheit. 
+
+
+## Das Modell
+
+Das folgende gemischte linear Modell wird angenommen:
 
 \begin{equation}
 \mathbf{y} = \mathbf{X}\mathbf{b} + \mathbf{Z}\mathbf{g} + \mathbf{e}
@@ -490,7 +495,52 @@ Im Paper wird verwendet, dass $cov(\hat{g}_i, g_i) = var(\hat{g}_i)$. Hier wird 
 
 wobei: $\mathbf{y}$ dem Vektor der Beobachtungen entspricht, $\mathbf{b}$ steht für den Vektor von fixen Effekten mit $\mathbf{X}$ der entsprechenden Inzidenzmatrix welche die fixen Effekte den Beobachtungen zuordnet, $\mathbf{g}$ entspricht dem Vektor der zufälligen Effekte mit der entsprechenden Inzidenzmatrix $\mathbf{Z}$, welche die zufälligen Effekte mit den Beobachtungen verknüpft und $\mathbf{e}$ ein Vektor von zufälligen Resteffekten.
 
-Die Varianzen für die zufälligen Effekte lauten: $var()$
+Die Varianzen für die zufälligen Effekte lauten: $var(\mathbf{g}) = \mathbf{G}$, $var(\mathbf{e}) = \mathbf{R}$ daraus folgt dann, dass 
+$$var(\mathbf{y}) = var(\mathbf{X}\mathbf{b} + \mathbf{Z}\mathbf{g} + \mathbf{e}) = \mathbf{Z}\mathbf{G}\mathbf{Z}^T + \mathbf{R}$$
+
+Analog dazu können wir ableiten, dass 
+
+$$ cov(\mathbf{y}, \mathbf{g}^T) = cov(\mathbf{X}\mathbf{b} + \mathbf{Z}\mathbf{g} + \mathbf{e}, \mathbf{g}^T) 
+= \mathbf{Z}\mathbf{G}$$
+
+
+## Die Schätzer
+Für die Parameter $b$ und $g$ verwenden wir die BLUE, respektive die BLUP Schätzer. Somit gilt, dass 
+
+\begin{equation}
+\hat{b} = (X^TV^{-1}X)^{-1}X^TV^{-1}y
+\label{eq:HatB}
+\end{equation}
+
+und 
+
+\begin{equation}
+\hat{g} = GZ^TV^{-1}(y - X\hat{b})
+\label{eq:HatG}
+\end{equation}
+
+## Der Beweis
+Der Beweis läuft so, dass für beide Terme $cov(\hat{g}_i, g_i)$ und $var(\hat{g}_i)$ die Definitionen eingesetzt werden und dann die Terme so vereinfacht werden, bis sie gleich sind.
+
+\begin{equation}
+var(\hat{g}) = var(GZ^TV^{-1}(y - X\hat{b})) = GZ^TV^{-1} * var(y - X\hat{b}) * V^{-1}ZG
+\label{eq:VarHatG}
+\end{equation}
+
+In Gleichung (\ref{eq:VarHatG}) berechnen wir vorerst einmal nur den Term $var(y - X\hat{b})$ und setzen anschliessend das Resultat wieder ein.
+
+\begin{eqnarray}
+var(y - X\hat{b}) &=& var(y) + var(X\hat{b}) - cov(y,(X\hat{b})^T) - cov(X\hat{b}, y^T) \\
+                  &=& V + X*var(\hat{b})*X^T - cov(y,\hat{b}^T)*X^T - X*cov(\hat{b}, y^T) \nonumber
+\label{eq:VarYMinusXb}
+\end{eqnarray}
+
+Aus (\ref{eq:VarYMinusXb}) berechnen wir $var(\hat{b})$ und $cov(y,\hat{b}^T)$ wobei gilt, dass $cov(y,\hat{b}^T) = (cov(\hat{b}, y^T))^T$
+
+\begin{eqnarray}
+var(\hat{b}) = 
+\label{eq:VarHatb}
+\end{eqnarray}
 
 
 \pagebreak

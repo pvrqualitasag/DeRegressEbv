@@ -52,6 +52,7 @@ knitr::opts_chunk$set(echo = FALSE, results = 'asis')
 \begin{tabular}{l}
 Peter von Rohr                      \\
 FB EDV, Qualitas AG                 \\
+Chamerstrasse 56, 6300 Zug          \\
 \verb+http://www.qualitasag.ch+     \\
 \verb+peter.vonrohr@qualitasag.ch+  
 \end{tabular}
@@ -143,7 +144,7 @@ robjAbrTable$to_pander_pandoc(psStyle = "grid",
 
 
 # Erklärung
-Dieses Dokument gibt eine Zusammenfassung vom Paper von @GTF2009. Der Fokus der Zusammenfassung liegt auf dem Abschnitt der Deregression von geschätzten Zuchtwerten (EBV), dies deshalb, weil wir dafür ein direktes Interesse für eine Anwendung haben. Die anderen Abschnitte insbesondere das Material zum Hintergrund des Papers werden hier kurz gehalten oder ganz ausgelassen. 
+Dieses Dokument gibt eine Zusammenfassung vom Paper von @GTF2009. Der Fokus der Zusammenfassung liegt auf dem Abschnitt der Deregression von geschätzten Zuchtwerten (EBV), dies deshalb, weil wir dafür ein direktes Interesse für eine Anwendung haben. Die anderen Abschnitte insbesondere das Material zum Hintergrund des Papers werden hier kurz gehalten. 
 
 In runden Klammern () werden die ursprünglichen englischen Begriffe aufgeführt, wo immer dies sinnvoll erscheint. Die geschweiften Klammern {}  enthalten zusätzliche erklärende Informationen, welche nicht im Paper sind. 
 
@@ -483,17 +484,27 @@ $$\frac{\hat{g}_{i-PA}}{r_i^{2*}} =  \frac{y_i^*}{Z_i'Z_i}$$
 
 Im Paper wird verwendet, dass $cov(\hat{g}_i, g_i) = var(\hat{g}_i)$. Hier wird diese Beziehung bewiesen. Der Beweis verwendet einfach die Definitionen der verwendeten Grössen und vereinfacht die resultierenden Ausdrücke bis zu deren Gleichheit. 
 
+{Die Notation ist in diesem Abschnitt vereinfacht, dass alle Matrizen und Vektoren mit normalem Font und nicht in boldface geschrieben werden.}
+
 
 ## Das Modell
 
 Das folgende gemischte linear Modell wird angenommen:
 
 \begin{equation}
-\mathbf{y} = \mathbf{X}\mathbf{b} + \mathbf{Z}\mathbf{g} + \mathbf{e}
+y = Xb + Zg + e
 \label{eq:MixedLinearModel}
 \end{equation}
 
-wobei: $\mathbf{y}$ dem Vektor der Beobachtungen entspricht, $\mathbf{b}$ steht für den Vektor von fixen Effekten mit $\mathbf{X}$ der entsprechenden Inzidenzmatrix welche die fixen Effekte den Beobachtungen zuordnet, $\mathbf{g}$ entspricht dem Vektor der zufälligen Effekte mit der entsprechenden Inzidenzmatrix $\mathbf{Z}$, welche die zufälligen Effekte mit den Beobachtungen verknüpft und $\mathbf{e}$ ein Vektor von zufälligen Resteffekten.
+wobei: 
+\begin{tabular}{ll}
+$y$   &  Vektor der Beobachtungen\\
+$b$   &  Vektor von fixen Effekten\\
+$X$   &  Inzidenzmatrix zwischen fixen Effekten und Beobachtungen zuordnet\\
+$g$   &  Vektor der zufälligen Effekte\\
+$Z$   &  Inzidenzmatrix zwischen zufälligen Effekten und Beobachtungen \\
+$e$   &  ein Vektor von zufälligen Resteffekten
+\end{tabular}
 
 Die Varianzen für die zufälligen Effekte lauten: $var(\mathbf{g}) = \mathbf{G}$, $var(\mathbf{e}) = \mathbf{R}$ daraus folgt dann, dass 
 $$var(\mathbf{y}) = var(\mathbf{X}\mathbf{b} + \mathbf{Z}\mathbf{g} + \mathbf{e}) = \mathbf{Z}\mathbf{G}\mathbf{Z}^T + \mathbf{R}$$
@@ -530,29 +541,29 @@ var(\hat{g}) = var(GZ^TV^{-1}(y - X\hat{b})) = GZ^TV^{-1} * var(y - X\hat{b}) * 
 In Gleichung (\ref{eq:VarHatG}) berechnen wir vorerst einmal nur den Term $var(y - X\hat{b})$ und setzen anschliessend das Resultat wieder ein.
 
 \begin{eqnarray}
-var(y - X\hat{b}) &=& var(y) + var(X\hat{b}) - cov(y,(X\hat{b})^T) - cov(X\hat{b}, y^T) \\
-                  &=& V + X*var(\hat{b})*X^T - cov(y,\hat{b}^T)*X^T - X*cov(\hat{b}, y^T) \nonumber
+var(y - X\hat{b}) &=& var(y) + var(X\hat{b}) - cov(y,(X\hat{b})^T) - cov(X\hat{b}, y^T)  \nonumber\\
+                  &=& V + X*var(\hat{b})*X^T - cov(y,\hat{b}^T)*X^T - X*cov(\hat{b}, y^T)
 \label{eq:VarYMinusXb}
 \end{eqnarray}
 
 Aus (\ref{eq:VarYMinusXb}) berechnen wir $var(\hat{b})$ und $cov(y,\hat{b}^T)$ wobei gilt, dass $cov(y,\hat{b}^T) = (cov(\hat{b}, y^T))^T$
 
 \begin{eqnarray}
-var(\hat{b}) &=& var((X^TV^{-1}X)^{-1}X^TV^{-1}y) \\
+var(\hat{b}) &=& var((X^TV^{-1}X)^{-1}X^TV^{-1}y) \nonumber\\
  &=& (X^TV^{-1}X)^{-1}X^TV^{-1}*var(y)*V^{-1}X(X^TV^{-1}X)^{-1} \nonumber\\
  &=& (X^TV^{-1}X)^{-1}X^TV^{-1}*V*V^{-1}X(X^TV^{-1}X)^{-1} \nonumber\\
  &=& (X^TV^{-1}X)^{-1}X^TV^{-1}X(X^TV^{-1}X)^{-1} \nonumber\\
- &=& (X^TV^{-1}X)^{-1} \nonumber
+ &=& (X^TV^{-1}X)^{-1} 
 \label{eq:VarHatb}
 \end{eqnarray}
 
 Die Kovarianz zwischen der Beobachtung $y$ und dem Schätzer $\hat{b}$ lautet
 
 \begin{eqnarray}
-cov(\hat{b}, y^T) &=& cov((X^TV^{-1}X)^{-1}X^TV^{-1}y, y^T) \\
+cov(\hat{b}, y^T) &=& cov((X^TV^{-1}X)^{-1}X^TV^{-1}y, y^T) \nonumber\\
                   &=& (X^TV^{-1}X)^{-1}X^TV^{-1}* cov(y, y^T) \nonumber\\
                   &=& (X^TV^{-1}X)^{-1}X^TV^{-1}* V \nonumber\\
-                  &=& (X^TV^{-1}X)^{-1}X^T \nonumber
+                  &=& (X^TV^{-1}X)^{-1}X^T 
 \label{eq:CovYHatb}
 \end{eqnarray}
 
@@ -560,23 +571,38 @@ cov(\hat{b}, y^T) &=& cov((X^TV^{-1}X)^{-1}X^TV^{-1}y, y^T) \\
 Das Resultate aus (\ref{eq:CovYHatb}) und (\ref{eq:VarHatb}) werden in (\ref{eq:VarYMinusXb}) eingesetzt. 
 
 \begin{eqnarray}
-var(y - X\hat{b}) &=& var(y) + var(X\hat{b}) - cov(y,(X\hat{b})^T) - cov(X\hat{b}, y^T) \\
+var(y - X\hat{b}) &=& var(y) + var(X\hat{b}) - cov(y,(X\hat{b})^T) - cov(X\hat{b}, y^T) \nonumber\\
                   &=& V + X*var(\hat{b})*X^T - cov(y,\hat{b}^T)*X^T - X*cov(\hat{b}, y^T) \nonumber \\
                   &=& V + X*(X^TV^{-1}X)^{-1}*X^T - X(X^TV^{-1}X)^{-1}*X^T - X*(X^TV^{-1}X)^{-1}X^T \nonumber \\
-                  &=& V - X*(X^TV^{-1}X)^{-1}*X^T \nonumber
+                  &=& V - X*(X^TV^{-1}X)^{-1}*X^T 
 \label{eq:VarYMXb}
 \end{eqnarray}
 
 Somit vereinfacht sich $var(\hat{g})$ zu: 
 
 \begin{eqnarray}
-var(\hat{g}) &=& var(GZ^TV^{-1}(y - X\hat{b})) \\
+var(\hat{g}) &=& var(GZ^TV^{-1}(y - X\hat{b})) \nonumber \\
              &=& GZ^TV^{-1} * var(y - X\hat{b}) * V^{-1}ZG \nonumber\\
              &=&  GZ^TV^{-1} * (V - X*(X^TV^{-1}X)^{-1}*X^T) * V^{-1}ZG \nonumber\\
              &=&  GZ^TV^{-1} * V * V^{-1}ZG - GZ^TV^{-1} * X*(X^TV^{-1}X)^{-1}*X^T* V^{-1}ZG \nonumber\\
-             &=&  GZ^TV^{-1} (I - X*(X^TV^{-1}X)^{-1}X^TV^{-1}) ZG \nonumber
+             &=&  GZ^TV^{-1} (I - X(X^TV^{-1}X)^{-1}X^TV^{-1}) ZG
 \label{eq:VarHatGResult}
 \end{eqnarray}
+
+Analog vefahren wir mit $cov(\hat{g}, g^T)$. Als erstes setzen wir die Definition von $\hat{g}$ ein und vereinfachen bis wir das gewünschte Resultat erhalten. 
+
+\begin{eqnarray}
+cov(\hat{g}, g^T) &=& cov(GZ^TV^{-1}(y - X\hat{b}), g^T) \nonumber\\
+                  &=& GZ^TV^{-1} cov(((y - X\hat{b})), g^T) \nonumber \\
+                  &=& GZ^TV^{-1} \left(cov(y, g^T) - X*cov(\hat{b}, g^T)\right) \nonumber\\
+                  &=& GZ^TV^{-1} \left(cov(y, g^T) - X*cov((X^TV^{-1}X)^{-1}X^TV^{-1}y, g^T)\right) \nonumber\\ 
+                  &=& GZ^TV^{-1} \left(cov(y, g^T) - X(X^TV^{-1}X)^{-1}X^TV^{-1}*cov(y, g^T)\right) \nonumber\\
+                  &=& GZ^TV^{-1} \left(ZG - X(X^TV^{-1}X)^{-1}X^TV^{-1}*ZG\right) \nonumber\\
+                  &=& GZ^TV^{-1} \left(I - X(X^TV^{-1}X)^{-1}X^TV^{-1}\right) ZG
+\label{eq:CovHatGTrueG}
+\end{eqnarray}
+
+Ein Vergleich zwischen (\ref{eq:VarHatGResult}) und (\ref{eq:CovHatGTrueG}) zeigt, dass die beiden Terme gleich sind und somit gilt, dass $var(\hat{g}) = cov(\hat{g}, g^T)$
 
 
 \pagebreak

@@ -106,7 +106,11 @@ robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.903",
                                         Date    = "29.03.2016",
                                         Who     = Sys.info()[["user"]],
                                         Change  = "Gewichtung der deregressierten Zuchtwerte, Entfernen der Elterninformation"))
-#robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.904",
+robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.904",
+                                        Date    = "12.04.2016",
+                                        Who     = Sys.info()[["user"]],
+                                        Change  = "Anhang mit Beweis abgeschlossen"))
+#robjDocuStatus$addRow(plTableRow = list(Version = "0.0.0.905",
 #                                        Date    = "",
 #                                        Who     = Sys.info()[["user"]],
 #                                        Change  = ""))
@@ -484,12 +488,12 @@ $$\frac{\hat{g}_{i-PA}}{r_i^{2*}} =  \frac{y_i^*}{Z_i'Z_i}$$
 
 Im Paper wird verwendet, dass $cov(\hat{g}_i, g_i) = var(\hat{g}_i)$. Hier wird diese Beziehung bewiesen. Der Beweis verwendet einfach die Definitionen der verwendeten Grössen und vereinfacht die resultierenden Ausdrücke bis zu deren Gleichheit. 
 
-{Die Notation ist in diesem Abschnitt vereinfacht, dass alle Matrizen und Vektoren mit normalem Font und nicht in boldface geschrieben werden.}
+{In diesem Abschnitt wurde die Notation vereinfacht. Alle Matrizen und Vektoren sind nicht in boldface geschrieben.}
 
 
 ## Das Modell
 
-Das folgende gemischte linear Modell wird angenommen:
+Das folgende gemischte lineare Modell wird angenommen:
 
 \begin{equation}
 y = Xb + Zg + e
@@ -498,25 +502,25 @@ y = Xb + Zg + e
 
 wobei: 
 \begin{tabular}{ll}
-$y$   &  Vektor der Beobachtungen\\
-$b$   &  Vektor von fixen Effekten\\
-$X$   &  Inzidenzmatrix zwischen fixen Effekten und Beobachtungen zuordnet\\
-$g$   &  Vektor der zufälligen Effekte\\
+$y$   &  Vektor der Beobachtungen \\
+$b$   &  Vektor der fixen Effekte \\
+$X$   &  Inzidenzmatrix zwischen fixen Effekten und Beobachtungen \\
+$g$   &  Vektor der zufälligen Effekte \\
 $Z$   &  Inzidenzmatrix zwischen zufälligen Effekten und Beobachtungen \\
 $e$   &  ein Vektor von zufälligen Resteffekten
 \end{tabular}
 
-Die Varianzen für die zufälligen Effekte lauten: $var(\mathbf{g}) = \mathbf{G}$, $var(\mathbf{e}) = \mathbf{R}$ daraus folgt dann, dass 
-$$var(\mathbf{y}) = var(\mathbf{X}\mathbf{b} + \mathbf{Z}\mathbf{g} + \mathbf{e}) = \mathbf{Z}\mathbf{G}\mathbf{Z}^T + \mathbf{R}$$
+Die Varianzen für die zufälligen Effekte lauten: $var(g) = G$, $var(e) = R$ daraus folgt dann, dass 
+$$var(y) = var(Xb + Zg + e) = ZGZ^T + R$$
 
 Analog dazu können wir ableiten, dass 
 
-$$ cov(\mathbf{y}, \mathbf{g}^T) = cov(\mathbf{X}\mathbf{b} + \mathbf{Z}\mathbf{g} + \mathbf{e}, \mathbf{g}^T) 
-= \mathbf{Z}\mathbf{G}$$
+$$ cov(y, g^T) = cov(Xb + Zg + e, g^T) 
+= ZG$$
 
 
 ## Die Schätzer
-Für die Parameter $b$ und $g$ verwenden wir die BLUE, respektive die BLUP Schätzer. Somit gilt, dass 
+Für die Parameter $b$ und $g$ verwenden wir den BLUE Schätzer ($\hat{b}$) und den BLUP Schätzer ($\hat{g}$). Somit gilt, dass 
 
 \begin{equation}
 \hat{b} = (X^TV^{-1}X)^{-1}X^TV^{-1}y
@@ -602,7 +606,7 @@ cov(\hat{g}, g^T) &=& cov(GZ^TV^{-1}(y - X\hat{b}), g^T) \nonumber\\
 \label{eq:CovHatGTrueG}
 \end{eqnarray}
 
-Ein Vergleich zwischen (\ref{eq:VarHatGResult}) und (\ref{eq:CovHatGTrueG}) zeigt, dass die beiden Terme gleich sind und somit gilt, dass $var(\hat{g}) = cov(\hat{g}, g^T)$
+Ein Vergleich zwischen (\ref{eq:VarHatGResult}) und (\ref{eq:CovHatGTrueG}) zeigt, dass die beiden Terme gleich sind und somit gilt, dass $$var(\hat{g}) = cov(\hat{g}, g^T)$$
 
 
 \pagebreak
